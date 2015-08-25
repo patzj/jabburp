@@ -2,9 +2,10 @@
 
 class View {
 
-	protected $data;
-
 	function __construct($file, $data) {
+		require ROOT . DS . 'application' . DS . 'view' . DS . 'include' . DS . 'header.php';
 		require $file; // require view file
+		require ROOT . DS . 'application' . DS . 'view' . DS . 'include' . DS . 'footer.php';
+
 	}
 }

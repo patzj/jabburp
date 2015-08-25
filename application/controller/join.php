@@ -3,9 +3,12 @@
 class Join extends Controller {
 
 	function index() {
-		$this->load->model('Join_model');
-		$data = 'hello world';
+		$data['title'] = 'Join';
 		$this->load->view('Join_view', $data);
+	}
+
+	function add() {
+		echo 'This is add controller';
 	}
 
 }
