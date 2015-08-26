@@ -11,7 +11,7 @@
 <div id="header">
 	<div class="container">
 		<h1>jabburp</h1>
-		<p>jabber up!</p>
+		<h2>jabber up!</h2>
 	</div><!-- end container -->
 </div><!-- end header -->
 

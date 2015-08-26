@@ -1,4 +1,4 @@
-<?php
+<?php if(!isset($_POST)) die('Direct script access not allowed');
 
 // database constants
 define('DB_HOSTNAME', 'localhost');

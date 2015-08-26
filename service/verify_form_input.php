@@ -1,4 +1,4 @@
-<?php
+<?php if(!isset($_POST)) die('Direct script access not allowed');
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
@@ -8,9 +8,22 @@ $conn = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DBNAME); // create 
 
 if($conn->connect_error) die('Unable to connect to database');
 
-if(array_key_exists('username', $_POST)) { // check existence of input from ajax/post
-	check_availability('account', 'username', $_POST['username']); // call function for checking db
+$data_key = key($_POST);
+switch ($data_key) {
+	case 'username':
+		check_availability('account', 'username', $_POST['username']); // call function for checking db
+		break;
+	
+	case 'email':
+		check_availability('account', 'email', $_POST['email']);
+		break;
+
+	default:
+		echo json_encode('');
+		break;
 }
+
+unset($_POST);
 
 function check_availability($table, $search, $key) {
 	global $conn; // include global var to function
