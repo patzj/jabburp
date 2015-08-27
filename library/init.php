@@ -17,10 +17,11 @@ class Init {
 		} else {
 			$file = ROOT . DS . 'application' . DS . 'controller' . DS . $url[0] . '.php';
 			if(file_exists($file)) { // check controller existence
-				require $file; // require controller
+				require_once $file; // require controller
 				$url[0] = ucfirst(strtolower($url[0])); 
 				$this->controller = new $url[0]();
 			} else {
+				$file = ROOT . DS . 'application' . DS . 'controller' . DS . 'error.php';
 				$this->router = new Router();
 				$this->router->controller_not_found(); // landing page if controller is not found
 				return false;

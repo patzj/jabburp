@@ -9,3 +9,6 @@ define('DB_DBNAME', 'jabburp');
 // defaults
 define('DEFAULT_CONTROLLER', 'home');
 define('DEFAULT_ERR_CONTROLLER', 'error');
+
+// timezone
+date_default_timezone_set('UTC');

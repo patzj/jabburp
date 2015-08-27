@@ -9,4 +9,8 @@ abstract class Model {
 
 		if($this->conn->connect_error) die('Unable to connect to database.');
 	}
+
+	function __destruct() {
+		$this->conn->close(); // close db connection wher obj is unset;
+	}
 }

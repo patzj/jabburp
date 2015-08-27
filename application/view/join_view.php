@@ -1,6 +1,7 @@
-<form id="form_join" action="join/add" method="post">
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed'); ?>
+<form id="form_join" action="join/signup" method="post">
 	<label for="username">Username:</label>
-	<input type="text" id="username" name="username" maxlength="20" value="<?= @$data['username']; ?>">
+	<input type="text" id="username" name="username" maxlength="20" value="<?= @$data['username'] ?>">
 	<span class="error"></span><br/>
 
 	<label for="password">Password:</label>
@@ -12,19 +13,19 @@
 	<span class="error"></span><br/>
 
 	<label for="email">Email:</label>
-	<input type="email" id="email" name="email" maxlength="64" value="<?= @$data['email']; ?>">
+	<input type="email" id="email" name="email" maxlength="64" value="<?= @$data['email'] ?>">
 	<span class="error"></span><br/>
 
 	<label for="c_email">Confirm Email:</label>
-	<input type="email" id="c_email" name="c_email" maxlength="64" value="<?= @$data['c_email']; ?>">
+	<input type="email" id="c_email" name="c_email" maxlength="64" value="<?= @$data['c_email'] ?>">
 	<span class="error"></span><br/>
 
 	<label for="firstname">Firstname:</label>
-	<input type="text" id="firstname" name="firstname" maxlength="32" value="<?= @$data['firstname']; ?>">
+	<input type="text" id="firstname" name="firstname" maxlength="32" value="<?= @$data['firstname'] ?>">
 	<span class="error"></span><br>
 
 	<label for="lastname">Lastname:</label>
-	<input type="text" id="lastname" name="lastname" maxlength="32" value="<?= @$data['lastname']; ?>">
+	<input type="text" id="lastname" name="lastname" maxlength="32" value="<?= @$data['lastname'] ?>">
 	<span class="error"></span><br>
 
 	<label for="gender">Gender:</label>
@@ -33,3 +34,6 @@
 	<span class="error"></span><br>
 	<input type="submit" id="submit" name="submit" value="Join">
 </form>
+<div class="error">
+	<?= @$data['error_msg']; ?>
+</div>

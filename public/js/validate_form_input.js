@@ -1,7 +1,7 @@
 "use strict";
-var url = './service/verify_form_input.php'; // destination url for ajax/post
+var url = './service/validate_form_input.php'; // destination url for ajax/post
 
-function verifyUsername() { // var assignment not working on callback.. I wonder why
+function validateUsername() { // var assignment not working on callback.. I wonder why
 	$('#username').next().text('');
 	if(isEmpty('#username')) { // check if empty
 		$('#username').next().text('*');
@@ -9,7 +9,7 @@ function verifyUsername() { // var assignment not working on callback.. I wonder
 		if(isTooShort('#username', 4)) { // check if too short
 			$('#username').next().text('too short');
 		} else if(isIndexNumeric('#username', 0) || // check first char if numeric
-			hasSpecialChars('#username')) { // or if contains special chars
+			hasSpecialChars('#username') || hasWhiteSpace('#username')) { // or if contains special chars and spaces
 			$('#username').next().text('invalid');
 		} else {
 			var data = {username: $('#username').val()}; // set data for ajax/post
@@ -25,17 +25,19 @@ function verifyUsername() { // var assignment not working on callback.. I wonder
 	}
 }
 
-function verifyPassword() {
+function validatePassword() {
 	var result = '';
 	if(isEmpty('#password')) { // check if empty
 		result = '*';
 	} else if(isTooShort('#password', 6)) { // check if too short
 		result = 'too short';
+	} else if(hasWhiteSpace('#password')) { // check for spaces
+		result = 'invalid'
 	}
 	$('#password').next().text(result);
 }
 
-function verifyCPassword() {
+function validateCPassword() {
 	var result = '';
 	if(isEmpty('#c_password')) { // check if empty
 		result = '*';
@@ -45,13 +47,13 @@ function verifyCPassword() {
 	$('#c_password').next().text(result);
 }
 
-function verifyEmail() {
+function validateEmail() {
 	$('#email').next().text('');
 	if(isEmpty('#email')) { // check if empty
 		$('#email').next().text('*');
 	} else { // email is not empty but...
-		var validEmail = /\S+@\S+\.\S+/g.test($('#email').val());
-		if(!validEmail) { // temp checker just to patch things up
+		var validEmail = /\S+@\S+\.\S+/g.test($('#email').val()); // temp checker just to patch things up
+		if(!validEmail || hasWhiteSpace('#email')) { // check...
 			$('#email').next().text('invalid');
 		} else {
 			var data = {email: $('#email').val()}; // set data for ajax/post
@@ -67,7 +69,7 @@ function verifyEmail() {
 	}
 }
 
-function verifyCEmail() {
+function validateCEmail() {
 	var result = '';
 	if(isEmpty('#c_email')) { // check if empty
 		result = '*';
@@ -77,11 +79,11 @@ function verifyCEmail() {
 	$('#c_email').next().text(result);
 }
 
-function verifyFirstname() {
+function validateFirstname() {
 	var result = '';
 	if(isEmpty('#firstname')) { // check if empty
 		result = '*';
-	} else if (isTooShort('#lastname', 2)) { // check if too short
+	} else if (isTooShort('#firstname', 2)) { // check if too short
 		result = 'too short';
 	} else if (hasSpecialCharsV2('#firstname')) { // check for specia chars
 		result = 'invalid';
@@ -89,7 +91,7 @@ function verifyFirstname() {
 	$('#firstname').next().text(result); 
 }
 
-function verifyLastname() {
+function validateLastname() {
 	var result = '';
 	if(isEmpty('#lastname')) { // check if empty
 		result = '*';
@@ -101,7 +103,7 @@ function verifyLastname() {
 	$('#lastname').next().text(result);
 }
 
-function verifyGender() {
+function validateGender() {
 	var result = '';
 	var gender = $('input[type=radio]:checked').val(); // get checked radio button
 	if(gender == null) { // if no radio button is checked
@@ -126,6 +128,10 @@ function isIndexNumeric(selector, index) { // for checking for numeric char
 	else return false;
 }
 
+function hasWhiteSpace(selector) { // for checking white spaces(spaces, tabs, ...)
+	return /\s+/.test($(selector).val());
+}
+
 function hasSpecialChars(selector) { // for checking special chars
 	return /[`~!@#$%^&*()\-\+=\[{\]}\\\|;:\'\",<>?]/.test($(selector).val());
 }
@@ -136,42 +142,42 @@ function hasSpecialCharsV2(selector) { // for checking special chars; dash allow
 
 $(document).ready(function() {
 	$('#username').blur(function() {
-		verifyUsername();
+		validateUsername();
 	});
 
 	$('#password').blur(function() {
-		verifyPassword();
+		validatePassword();
 	});
 
 	$('#c_password').blur(function() {
-		verifyCPassword();
+		validateCPassword();
 	});
 
 	$('#email').blur(function() {
-		verifyEmail();
+		validateEmail();
 	});
 
 	$('#c_email').blur(function() {
-		verifyCEmail();
+		validateCEmail();
 	});
 
 	$('#firstname').blur(function() {
-		verifyFirstname();
+		validateFirstname();
 	});
 
 	$('#lastname').blur(function() {
-		verifyLastname();
+		validateLastname();
 	});
 
 	$('#form_join').submit(function() {
-		verifyUsername();
-		verifyPassword();
-		verifyCPassword();
-		verifyEmail();
-		verifyCEmail();
-		verifyFirstname();
-		verifyLastname();
-		verifyGender(); // run all checker functions before submit
+		validateUsername();
+		validatePassword();
+		validateCPassword();
+		validateEmail();
+		validateCEmail();
+		validateFirstname();
+		validateLastname();
+		validateGender(); // run all checker functions before submit
 		if($('span.error').text() != '') { // if error found
 			console.log('errors');
 			return false; // restrict submit

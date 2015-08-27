@@ -6,9 +6,9 @@ class Loader {
 		$model = strtolower($class); // to lower for require
 		$file = ROOT . DS . 'application' .  DS . 'model' . DS . $model . '.php';
 		if(file_exists($file)) { // check class file existence
-			require $file; // require class file
+			require_once $file; // require class file
 			return new $class(); // return model object
-		}
+		} return false;
 	}
 
 	function view($view, $data) {
@@ -16,6 +16,6 @@ class Loader {
 		$file = ROOT . DS . 'application' . DS . 'view' . DS . $view . '.php';
 		if(file_exists($file)) {
 			return new View($file, $data); // return view object
-		}
+		} return false;
 	}
 }

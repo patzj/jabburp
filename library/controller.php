@@ -3,6 +3,7 @@
 abstract class Controller {
 
 	protected $model;
+	protected $view;
 	protected $helper;
 	protected $load;
 
