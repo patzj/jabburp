@@ -2,44 +2,28 @@
 
 class Init {
 
-	protected $controller;
-	protected $router;
+	private $controller;
 
 	function __construct() {
-		$url = isset($_GET['url']) ? $_GET['url'] : null;
-		$url = rtrim($url, '/');
-		$url = explode('/', $url);
-		
-		if(empty($url[0])) { // check class or controller in url
-			$this->router = new Router(); // default controller
-			$this->router->default_page();
-			return false;
-		} else {
-			$file = ROOT . DS . 'application' . DS . 'controller' . DS . $url[0] . '.php';
-			if(file_exists($file)) { // check controller existence
-				require_once $file; // require controller
-				$url[0] = ucfirst(strtolower($url[0])); 
-				$this->controller = new $url[0]();
-			} else {
-				$file = ROOT . DS . 'application' . DS . 'controller' . DS . 'error.php';
-				$this->router = new Router();
-				$this->router->controller_not_found(); // landing page if controller is not found
-				return false;
-			}
+
+		$url = @strtolower($_GET['url']); // get url
+		$url = rtrim($url, '/'); // remove extra slashes
+		$url = explode('/', $url); // split url into array
+
+		$controller = (empty($url[0])) ? DEFAULT_CONTROLLER : $url[0];
+		$file = ROOT . DS . 'application' . DS . 'controller' . DS . $controller . '.php';
+		if (!file_exists($file)) { // check file existence; reassignment if not exist
+			$controller = DEFAULT_ERR_CONTROLLER;
+			$file = ROOT . DS . 'application' . DS . 'controller' . DS . $controller . '.php';
 		}
 
-		if(empty($url[1])) { // check function in url
-			$this->controller->index(); // default function
-			return false;
-		} else {
-			$url[1] = strtolower($url[1]);
-			if(method_exists($this->controller, $url[1])) { // check function existence
-				$this->controller->$url[1]();
-			} else {
-				$this->router = new Router();
-				$this->router->function_not_found(); // landing page if fuction is not found
-				return false;
-			}
-		}	
+		require_once $file; // require controller file
+		$controller = ucfirst($controller);
+		$this->controller = new $controller(); // assign controller obj to instance var
+		
+		$action = (!empty($url[1]) && method_exists($this->controller, $url[1])) ?
+			$url[1] : DEFAULT_ACTION; // check url and method existence; assign to default if false
+
+		$this->controller->$action(); // call action
 	}
 }

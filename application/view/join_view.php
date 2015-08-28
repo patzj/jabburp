@@ -1,5 +1,5 @@
 <?php if(!defined('BASEPATH')) die('Direct script access not allowed'); ?>
-<form id="form_join" action="join/signup" method="post">
+<form id="form_join" action="<?= BASEPATH ?>join/signup" method="post">
 	<label for="username">Username:</label>
 	<input type="text" id="username" name="username" maxlength="20" value="<?= @$data['username'] ?>">
 	<span class="error"></span><br/>
@@ -35,5 +35,5 @@
 	<input type="submit" id="submit" name="submit" value="Join">
 </form>
 <div class="error">
-	<?= @$data['error_msg']; ?>
+	<?= @$data['error_msg'] ?>
 </div>
