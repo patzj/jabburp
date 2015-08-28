@@ -15,15 +15,15 @@ switch ($data_key) {
 		break;
 	
 	case 'email':
-		check_availability('account', 'email', $_POST['email']);
+		check_availability('account', 'email', $_POST['email']); // call function for checking db
 		break;
 
 	default:
-		echo json_encode('');
+		echo json_encode(''); // encode empty json for ajax/post callback
 		break;
 }
 
-unset($_POST);
+unset($_POST); // unset POST
 
 function check_availability($table, $search, $key) {
 	global $conn; // include global var to function

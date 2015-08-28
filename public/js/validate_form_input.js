@@ -1,6 +1,7 @@
 "use strict";
-var url = './service/validate_form_input.php'; // destination url for ajax/post
+var url = 'http://localhost/jabburp/service/validate_form_input.php'; // destination url for ajax/post
 
+// validation functions
 function validateUsername() { // var assignment not working on callback.. I wonder why
 	$('#username').next().text('');
 	if(isEmpty('#username')) { // check if empty
@@ -112,6 +113,17 @@ function validateGender() {
 	$('label[for=gender]').nextAll('span.error').text(result);
 }
 
+function validateAll() { // all in one validation
+	validateUsername();
+	validatePassword();
+	validateCPassword();
+	validateEmail();
+	validateCEmail();
+	validateFirstname();
+	validateLastname();
+	validateGender();	
+}
+
 // helper functions
 function isEmpty(selector) { // for checking empty input
 	if($(selector).val() == '') return true;
@@ -136,48 +148,45 @@ function hasSpecialChars(selector) { // for checking special chars
 	return /[`~!@#$%^&*()\-\+=\[{\]}\\\|;:\'\",<>?]/.test($(selector).val());
 }
 
-function hasSpecialCharsV2(selector) { // for checking special chars; dash allowed
-	return /[`~!@#$%^&*()_\+=\[{\]}\\\|;:\'\",<>?]/.test($(selector).val());
+function hasSpecialCharsV2(selector) { // for checking special chars; dash, single quote allowed
+	return /[`~!@#$%^&*()_\+=\[{\]}\\\|;:\",<>?]/.test($(selector).val());
 }
 
+// main method
 $(document).ready(function() {
-	$('#username').blur(function() {
-		validateUsername();
-	});
-
-	$('#password').blur(function() {
-		validatePassword();
-	});
-
-	$('#c_password').blur(function() {
-		validateCPassword();
-	});
-
-	$('#email').blur(function() {
-		validateEmail();
-	});
-
-	$('#c_email').blur(function() {
-		validateCEmail();
-	});
-
-	$('#firstname').blur(function() {
-		validateFirstname();
-	});
-
-	$('#lastname').blur(function() {
-		validateLastname();
+	$('input').blur(function() { // run function depending on input blurred
+		switch($(this).attr('name')) {
+			case 'username':
+				validateUsername();
+				break;
+			case 'password':
+				validatePassword();
+				break;
+			case 'c_password':
+				validateCPassword();
+				break;
+			case 'email':
+				validateEmail();
+				break;
+			case 'c_email':
+				validateCEmail();
+				break;
+			case 'firstname':
+				validateFirstname();
+				break;
+			case 'lastname':
+				validateLastname();
+				break
+			case 'gender':
+				validateGender();
+				break;
+			default:
+				break;
+		}
 	});
 
 	$('#form_join').submit(function() {
-		validateUsername();
-		validatePassword();
-		validateCPassword();
-		validateEmail();
-		validateCEmail();
-		validateFirstname();
-		validateLastname();
-		validateGender(); // run all checker functions before submit
+ 		validateAll() // run all validation functions before submit
 		if($('span.error').text() != '') { // if error found
 			console.log('errors');
 			return false; // restrict submit
