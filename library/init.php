@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) die('Direct script access not allowed');
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed.');
 
 class Init {
 
@@ -25,5 +25,9 @@ class Init {
 			$url[1] : DEFAULT_ACTION; // check url and method existence; assign to default if false
 
 		$this->controller->$action(); // call action
+	}
+
+	function __destruct() {
+		unset($this->controller); // unset controller obj
 	}
 }

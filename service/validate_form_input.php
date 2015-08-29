@@ -1,4 +1,4 @@
-<?php if(!isset($_POST)) die('Direct script access not allowed');
+<?php if(empty($_POST)) die('Direct script access not allowed.');
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
@@ -22,8 +22,6 @@ switch ($data_key) {
 		echo json_encode(''); // encode empty json for ajax/post callback
 		break;
 }
-
-unset($_POST); // unset POST
 
 function check_availability($table, $search, $key) {
 	global $conn; // include global var to function

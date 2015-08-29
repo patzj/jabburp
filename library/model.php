@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) die('Direct script access not allowed');
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed.');
 
 abstract class Model {
 	
@@ -11,6 +11,6 @@ abstract class Model {
 	}
 
 	function __destruct() {
-		$this->conn->close(); // close db connection wher obj is unset;
+		$this->conn->close(); // close db connection when obj is unset;
 	}
 }

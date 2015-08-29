@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) die('Direct script access not allowed');
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed.');
 
 class Helper {
 

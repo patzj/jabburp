@@ -1,18 +1,19 @@
-<?php if(!defined('BASEPATH')) die('Direct script access not allowed');
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed.');
 
-class Join extends Controller {
+class Signup extends Controller {
 	private $data;
 
 	function index() {
 		$data = @$this->data; // set local data value from instance data
-		$data['title'] = 'Join'; 
-		$this->view = $this->load->view('Join_view', $data);
+		$data['title'] = 'Sign Up'; 
+		$this->view = $this->load->view('Signup_view', $data);
 		unset($data); // unset local data
 		unset($this->data); // unset instance data
 		unset($this->view); // unset view obj
 	}
 
-	function signup() {
+	function submit() {
+		if(empty($_POST)) die('Direct script access not allowed.');
 		extract($_POST); // retrieve data
 		
 		$username = filter_var($username, FILTER_SANITIZE_STRING);
@@ -22,28 +23,27 @@ class Join extends Controller {
 
 		$data = [
 			'username' => $username,
-			'password' => $password,
+			'password' => md5($password),
 			'email' => $email,
-			'firstname' => $firstname,
-			'lastname' => $lastname,
+			'firstname' => stripslashes($firstname),
+			'lastname' => stripslashes($lastname), // a little bit more of sanitation
 			'gender' => $gender
 		]; // set data for db
 
-		$this->model = $this->load->model('Join_model'); // load join db model
+		$this->model = $this->load->model('Signup_model'); // load signup model
 		if($this->model->insert($data)) { // pass data to insert function; check for success/error
 			self::success(); // pass control to success
 		} else {
 			$this->data = $_POST; // set POST content to instance data
 			$this->data['error_msg'] = 'Something went wrong. Please check input.'; // add error msg
-			unset($_POST); // unset POST
 			unset($data); // unset local data
 			self::index(); // loop control to index
 		}
 	}
 
 	function success() {
-		$data['title'] = 'Join';
-		$this->load->view('Join_success_view', $data);
+		$data['title'] = 'Sign Up';
+		$this->load->view('Signup_success_view', $data);
 		unset($data); // unset local data
 		unset($this->view); // unset view obj
 	}

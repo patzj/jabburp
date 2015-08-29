@@ -1,5 +1,5 @@
-<?php if(!defined('BASEPATH')) die('Direct script access not allowed'); ?>
-<form id="form_join" action="<?= BASEPATH ?>join/signup" method="post">
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed.'); ?>
+<form id="form_signup" action="<?= BASEPATH ?>signup/submit" method="post">
 	<label for="username">Username:</label>
 	<input type="text" id="username" name="username" maxlength="20" value="<?= @$data['username'] ?>">
 	<span class="error"></span><br/>
@@ -32,7 +32,7 @@
 	<input type="radio" id="male" class="gender" name="gender" value="male"><span>Male</span>
 	<input type="radio" id="female" class="gender" name="gender" value="female"><span>Female</span>
 	<span class="error"></span><br>
-	<input type="submit" id="submit" name="submit" value="Join">
+	<input type="submit" id="btn_signup" name="btn_signup" value="Sign Up">
 </form>
 <div class="error">
 	<?= @$data['error_msg'] ?>
