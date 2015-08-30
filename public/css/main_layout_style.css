@@ -1,0 +1,34 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+#header {
+	background: green;
+}
+
+#nav {
+	background: green;
+}
+
+#nav ul li {
+	display: inline;
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+#nav a:link, #nav a:visited {
+	color: #fff;
+}
+
+#nav a:hover {
+	color: #ff9;
+}
+
+#nav a:active {
+	color: #ff3;
+}

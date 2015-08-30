@@ -1,5 +1,8 @@
-<?php if(!defined('BASEPATH')) die('Direct script access not allowed.');
+<?php if(!defined('BASEPATH')) die('Direct script access not allowed.'); ?>
+<div id="contact_list">
 
-echo "this is home view";
-echo "<br>Hello " . $_SESSION['username'];
-echo '&nbsp;<a href="' . BASEPATH . 'logout">Log Out</a>';
+</div>
+<div id="chat_space">
+
+</div>
+

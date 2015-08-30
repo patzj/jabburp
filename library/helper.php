@@ -8,6 +8,6 @@ class Helper {
 		$url = isset($_GET['url']) ? $_GET['url'] : null;
 		$url = rtrim($url, '/');
 		$url = explode('/', $url);
-		return (is_numeric($url[$index])) ? $url[$index] : null;
+		return (is_numeric($index)) ? $url[$index] : null;
 	}
 }
