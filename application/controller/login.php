@@ -8,7 +8,7 @@ class Login extends Controller {
 
 		session_start();
 		if(isset($_SESSION['username'])) header('location: ' . BASEPATH);
-		else session_destroy(); // check if current session if active
+		else session_destroy(); // destroy current session used for checking
 	}
 
 	function index() {

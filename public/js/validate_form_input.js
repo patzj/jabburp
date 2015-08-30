@@ -1,5 +1,5 @@
 "use strict";
-var url = 'http://localhost/jabburp/service/validate_form_input.php'; // destination url for ajax/post
+var url = 'http://localhost/jabburp/signup/validate'; // destination url for ajax/post
 
 // validation functions
 function validateUsername() { // var assignment not working on callback.. I wonder why

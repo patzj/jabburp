@@ -11,7 +11,6 @@ session_start();
 	<link href="<?= BASEPATH ?>public/css/main_layout_style.css" rel="stylesheet" type="text/css"/>
 	<link href="<?= BASEPATH ?>public/css/profile_layout_style.css" rel="stylesheet" type="text/css"/>
 	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="<?= BASEPATH ?>public/js/validate_form_input.js"></script>
 </head>
 <body>
 <div id="header">

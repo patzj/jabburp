@@ -3,6 +3,14 @@
 class Signup extends Controller {
 	private $data;
 
+	function __construct() {
+		parent::__construct();
+
+		session_start();
+		if(isset($_SESSION['username'])) header('location: ' . BASEPATH);
+		else session_destroy(); // destroy current session used for checking
+	}
+
 	function index() {
 		$data = @$this->data; // set local data value from instance data
 		$data['title'] = 'Sign Up'; 
@@ -10,6 +18,35 @@ class Signup extends Controller {
 		unset($data); // unset local data
 		unset($this->data); // unset instance data
 		unset($this->view); // unset view obj
+	}
+
+	function validate() {
+		if(empty($_POST)) die('Direct script abs(number)ccess not allowed.');
+
+		$array_key = key($_POST); // get current array key from POST
+		switch($array_key) {
+			case 'username':
+				self::check_availability('username', $_POST['username']); // call function for checking db
+				break;
+			case 'email':
+				self::check_availability('email', $_POST['email']); // call function for checking db
+				break;
+			default:
+				echo json_encode(''); // encode empty json for ajax/post callback
+				break;
+		}
+	}
+
+	function check_availability($column, $key) {
+		$data = [
+			'column' => $column,
+			'key' => $key
+		]; // prepare data for db
+		$this->model = $this->load->model('Signup_model'); // load signup model
+		$result = $this->model->validate($data); // pass returned data from model
+		echo json_encode($result); // encode for ajax/post callback
+		unset($data); // unset local data
+		unset($this->model); // unset view obj
 	}
 
 	function submit() {

@@ -29,4 +29,22 @@ class Signup_model extends Model {
 		$stmt->close(); // close prepared statement
 		return false;
 	}
+
+	function validate($data) {
+		extract($data); // extract POST
+		unset($data);
+
+		$stmt = $this->conn->prepare("SELECT * FROM account
+			WHERE $column = ?"); // prepare query for account
+		$stmt->bind_param('s', $key); // bind param
+		$stmt->execute(); // execute query
+		$stmt->store_result(); // store result
+
+		$result = '';
+		if($stmt->num_rows > 0) $result = 'not available'; // check no of rows returned
+
+		$stmt->free_result(); // free stored result
+		$stmt->close(); // close prepared statement
+		return $result;
+	}
 }

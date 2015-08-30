@@ -37,3 +37,4 @@
 <div class="error">
 	<?= @$data['error_msg'] ?>
 </div>
+<script src="<?= BASEPATH ?>public/js/validate_form_input.js"></script>
