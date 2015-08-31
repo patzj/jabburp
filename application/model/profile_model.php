@@ -14,7 +14,7 @@ class Profile_model extends Model {
 			$stmt->fetch(); // fetch stored data
 			$stmt->free_result(); // free stored data
 			$stmt->close(); // close prepare statement
-		} else return null; // stop further script exec; return null if no rows returned
+		} else return false; // stop further script exec; return false if no rows returned
 
 		$stmt = $this->conn->prepare('SELECT * FROM user_info 
 			WHERE uid=?'); // prepare query for user_info
@@ -26,7 +26,7 @@ class Profile_model extends Model {
 			while($row = $result->fetch_assoc()) {
 				$data = $row; // pass row content to data array
 			}
-		} else return null; // return null if no rows returned
+		} else return false; // return false if no rows returned
 
 		$data['email'] = $email; // additional info
 

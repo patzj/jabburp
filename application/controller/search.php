@@ -18,9 +18,9 @@ class Search extends Controller {
 		if(empty($_POST)) die('Direct script access not allowed.');
 		extract($_POST); // this data contains any of the ff: username, email, firstname, lastname
 		
-		$this->model = $this->load->model('Search_model');
-		$result = $this->model->get_user_info($data);
-		if($result) echo json_encode($result);
-		else echo json_encode('not found');
+		$this->model = $this->load->model('Search_model'); // load model obj
+		$result = $this->model->get_user_info($data); // pass returned data to result
+		if($result) echo json_encode($result); // encode result for ajax/post callback
+		else echo json_encode(''); // return null so length will result 0 on js eval
 	}
 }

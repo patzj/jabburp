@@ -12,3 +12,7 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 - Log In/Log Out Module
 - Profile View Module
 - Search Module - partial
+
+#### Alpha 1.1.2
+- Profile View Module - partially improved
+- Search Module - partially improved

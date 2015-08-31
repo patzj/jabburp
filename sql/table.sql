@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS user_info (
 
 # table contact
 CREATE TABLE IF NOT EXISTS contact(
-    inviter int(11) NOT NULL,
-    invitee int(11) NOT NULL,
+    user1 int(11) NOT NULL,
+    user2 int(11) NOT NULL,
     status enum('pending',  'confirmed',  'rejected',  'blocked'),
-    CONSTRAINT fk_inviter FOREIGN KEY (inviter) REFERENCES account(uid) ON DELETE CASCADE,
-    CONSTRAINT fk_invitee FOREIGN KEY (invitee) REFERENCES account(uid) ON DELETE CASCADE
+    CONSTRAINT fk_user1 FOREIGN KEY (user1) REFERENCES account(uid) ON DELETE CASCADE,
+    CONSTRAINT fk_user2 FOREIGN KEY (user2) REFERENCES account(uid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -10,7 +10,9 @@
 		?>
 		<a href="<?= BASEPATH ?>profile/edit/<?= @$_SESSION['username'] ?>">Edit</a>
 		<?php else: ?>
-		<a href="#">Add Contact</a>
+		<div id="contact_stat_container">
+			<button id="contact_stat" value="<?= @$data['contact_stat'] ?>"><?= @$data['contact_stat'] ?></button>
+		</div><!-- end contact_stat_container -->
 		<?php endif; ?>
 		<table>
 			<tr>
@@ -28,3 +30,4 @@
 		</table>
 	</div><!-- end info_container -->
 </div><!-- end profile_main -->
+<script src="<?= BASEPATH ?>public/js/user_contact_stat.js"></script>
