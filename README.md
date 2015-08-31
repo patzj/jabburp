@@ -16,3 +16,6 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 #### Alpha 1.1.2
 - Profile View Module - partially improved
 - Search Module - partially improved
+
+#### Alpha 1.1.3
+- Partial Contact Module

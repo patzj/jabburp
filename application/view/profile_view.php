@@ -11,7 +11,22 @@
 		<a href="<?= BASEPATH ?>profile/edit/<?= @$_SESSION['username'] ?>">Edit</a>
 		<?php else: ?>
 		<div id="contact_stat_container">
-			<button id="contact_stat" value="<?= @$data['contact_stat'] ?>"><?= @$data['contact_stat'] ?></button>
+		<?php
+			if(@$data['contact_stat']) {
+				extract(@$data['contact_stat']);
+				if(@$_SESSION['uid'] == $user1) { 
+					$btn_val[] = $status; // if current user added the profile owner
+					$btn_val[] = 'cancel';
+				} else {
+					$btn_val[] = 'confirm'; // if profile owner added the current user
+					$btn_val[] = 'reject';
+				}
+			} else {
+				$btn_val[] = 'add'; // if no rows found on contact table
+			}
+		?>
+			<button id="contact_stat" value="<?= @$btn_val[0] ?>"><?= @$btn_val[0] ?></button>
+			<button id="negate_contact_stat" value="<?= @$btn_val[1] ?>"><?= @$btn_val[1] ?></button>
 		</div><!-- end contact_stat_container -->
 		<?php endif; ?>
 		<table>

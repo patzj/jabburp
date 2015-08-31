@@ -24,7 +24,7 @@ class Profile extends Controller {
 		if($result) { // check if result is not false
 			$data = $result; // pass result content to data var
 			$data['username'] = $username; // add username to data var; required for processing view
-			$data['contact_stat'] = self::contact_stat(); // add contact_stat to data var; required for processing view
+			$data['contact_stat'] = self::contact_stat(''); // add contact_stat to data var; required for processing view
 		} else { // if false
 			$data['username'] = 'unknown user'; // pass unknown user
 			$data['about'] = 'This user doesn\'t exist.'; // pass doesn't exist info
@@ -37,7 +37,8 @@ class Profile extends Controller {
 		unset($this->view); // unset view obj
 	}
 
-	function contact_stat() {
+	function contact_stat($data) {
+		if(!isset($data)) die('Direct script access not allowed.'); // just to prevent url access
 
 		$visitor = $_SESSION['username']; // get current user
 		$visited = $this->helper->url_segment(2); // get username of profile visited
@@ -50,24 +51,7 @@ class Profile extends Controller {
 
 		$this->model = $this->load->model('Contact_model'); // load contact model
 		$result = $this->model->get_contact_stat($data); // pass returned data to result
-
-		switch($result) { // will return value to view method depending on result var 
-			case 'confirmed':
-				return 'Remove Contact';
-				break;
-			case 'pending':
-				return 'Pending';
-				break;
-			case false:
-			case 'rejected':
-				return 'Add Contact';
-				break;
-			case 'blocked':
-				return 'Disabled';
-				break;
-			default:
-				return 'Add Contact';
-				break;
-		}
+		
+		return $result;
 	}
 }
