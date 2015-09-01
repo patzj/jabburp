@@ -55,8 +55,6 @@ class Profile extends Controller {
 	}
 
 	private function contact_status() {
-		//if(!isset($data)) die('Direct script access not allowed.'); // just to prevent url access
-
 		$current = $_SESSION['username']; // get current user
 		$other = $this->helper->url_segment(2); // get username of other user
 		if($other == null) die('Error. Do not mess with the URL.'); // stop script

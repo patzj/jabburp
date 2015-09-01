@@ -25,7 +25,20 @@ class Contact_model extends Model {
 		return $data;
 	}
 
-	function cancel_contact_req($data) { // remove certain row with with pending stat
+	function add_contact_req($data) { // send contact request to profile owner
+		extract($data); // extract data
+
+		$stmt = $this->conn->prepare("INSERT INTO contact 
+			VALUES((SELECT uid FROM account WHERE username = ?), 
+			(SELECT uid FROM account WHERE username = ?), 'pending')"); // prepare query
+		$stmt->bind_param('ss', $current, $other); // bind param
+		$result = $stmt->execute(); // execute query
+		$stmt->close(); // close prepare statement
+
+		return $result;
+	}
+
+	function cancel_contact_req($data) { // remove certain row/s from contact
 		extract($data); // extract data from controller
 
 		$stmt = $this->conn->prepare('DELETE FROM contact 
@@ -40,24 +53,25 @@ class Contact_model extends Model {
 		return $result;
 	}
 
-	function confirm_contact_req($data) {
-		extract($data);
+	function confirm_contact_req($data) { // confirm request from profile owner
+		extract($data); // extract data
 
-		$stmt = $this->conn->prepare('UPDATE contact SET status = "confirmed" 
+		$stmt = $this->conn->prepare("UPDATE contact SET status = 'confirmed' 
 			WHERE (user1 = (SELECT uid FROM account WHERE username = ?) 
 			AND user2 = (SELECT uid FROM account WHERE username = ?))
-			AND status = "pending"');
-		$stmt->bind_param('ss', $current, $other);
-		if($stmt->execute()) {
+			AND status = 'pending'"); // prepare 1st query; update the req to confirmed
+		$stmt->bind_param('ss', $current, $other); // bind param
+		if($stmt->execute()) { // execute; check if true
 			$stmt->close(); // close prev prepared statement
 
 			$stmt = $this->conn->prepare('INSERT INTO contact 
-				VALUES(?, ?, "confirmed")');
-			$stmt->bind_param('ss', $other, $current);
-			if($stmt->execute) {
-				$stmt->close();
+				VALUES((SELECT uid FROM account WHERE username = ?), # 2nd query
+				(SELECT uid FROM account WHERE username = ?), "confirmed")'); // add another contact row for other user
+			$stmt->bind_param('ss', $other, $current); // bind param
+			if($stmt->execute()) { // execute; test if true
+				$stmt->close(); // close prepare statement
+				return true;
 			}
-			return true;
 		} return false;
 	}
 }

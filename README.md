@@ -23,3 +23,6 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 #### Alpha 1.1.4
 - HTML5 Semantics
 - HTML Standardization
+
+#### Alpha 1.1.5
+- Working Add/Remove Contact Module(atleast for profile view)
