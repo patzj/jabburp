@@ -4,15 +4,15 @@
 	box-sizing: border-box;
 }
 
-#header {
+header {
 	background: green;
 }
 
-#nav {
+nav {
 	background: green;
 }
 
-#nav ul li {
+nav ul li {
 	display: inline;
 	list-style: none;
 }
@@ -21,14 +21,14 @@ a {
 	text-decoration: none;
 }
 
-#nav a:link, #nav a:visited {
+nav a:link, nav a:visited {
 	color: #fff;
 }
 
-#nav a:hover {
+nav a:hover {
 	color: #ff9;
 }
 
-#nav a:active {
+nav a:active {
 	color: #ff3;
 }

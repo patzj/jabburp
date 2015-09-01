@@ -12,12 +12,12 @@ class Contact extends Controller {
 	function cancel() { // this will reject/cancel request
 		if(empty($_POST)) die('Direct script access not allowed.');
 		
-		$visitor = $_SESSION['username']; // get current user
-		$visited = $_POST['data']; // get username of profile visited; h3 tag
+		$current = $_SESSION['username']; // get current user
+		$other = $_POST['data']; // get username of other user; h3 tag
 
 		$data = [
-			'visitor' => $visitor,
-			'visited' => $visited
+			'current' => $current,
+			'other' => $other
 		]; // prepare data for db
 
 		$this->model = $this->load->model('Contact_model'); // load contact model

@@ -1,10 +1,10 @@
-	</div><!-- end container -->
-</div><!-- end content -->
+	</section><!-- end container -->
+</main><!-- end content -->
 
-<div id="footer">
-	<div class="container">
+<footer>
+	<section class="container">
 		
-	</div><!-- end container -->
-</div><!-- end footer -->
+	</section><!-- end container -->
+</footer><!-- end footer -->
 </body>
 </html>
