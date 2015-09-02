@@ -13,8 +13,8 @@ class Search_model extends Model {
 			CONCAT(user_info.firstname, ' ', user_info.lastname) AS name # first & last from user_info
 			FROM user_info RIGHT JOIN account  # get all from left table (account)
 			ON user_info.uid = account.uid # that can meet this condition
-			WHERE user_info.firstname LIKE CONCAT('%', ?, '%') # condition to meet by user_info on 2nd query
-			OR user_info.lastname LIKE CONCAT('%', ?, '%')"); // pretty sick query for my current level
+			WHERE user_info.firstname LIKE CONCAT(?, '%') # condition to meet by user_info on 2nd query
+			OR user_info.lastname LIKE CONCAT(?, '%')"); // pretty sick query for my current level
 		$stmt->bind_param('ssss', $search_key, $search_key, $search_key, $search_key); // bind param
 		$stmt->execute(); // execute query
 		$result = $stmt->get_result(); // get result

@@ -28,6 +28,7 @@ session_start();
 		<ul>
 			<li><a href="<?= BASEPATH ?>">Home</a></li>
 			<li><a href="<?= BASEPATH ?>profile/view/<?= @$_SESSION['username'] ?>">Profile</a><li>
+			<li><a href="<?= BASEPATH ?>search">Search</a></li>
 		</ul>
 	</section><!-- end container -->
 </nav><!-- end nav -->

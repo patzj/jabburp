@@ -60,14 +60,14 @@ class Contact_model extends Model {
 			WHERE (user1 = (SELECT uid FROM account WHERE username = ?) 
 			AND user2 = (SELECT uid FROM account WHERE username = ?))
 			AND status = 'pending'"); // prepare 1st query; update the req to confirmed
-		$stmt->bind_param('ss', $current, $other); // bind param
+		$stmt->bind_param('ss', $other, $current); // bind param
 		if($stmt->execute()) { // execute; check if true
 			$stmt->close(); // close prev prepared statement
 
 			$stmt = $this->conn->prepare('INSERT INTO contact 
 				VALUES((SELECT uid FROM account WHERE username = ?), # 2nd query
 				(SELECT uid FROM account WHERE username = ?), "confirmed")'); // add another contact row for other user
-			$stmt->bind_param('ss', $other, $current); // bind param
+			$stmt->bind_param('ss', $current, $other); // bind param
 			if($stmt->execute()) { // execute; test if true
 				$stmt->close(); // close prepare statement
 				return true;
