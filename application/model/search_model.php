@@ -3,6 +3,8 @@
 class Search_model extends Model {
 
 	function get_user_info($search_key) { 
+		if(empty($search_key)) return false; // just to make sure no query will run
+
 		$stmt = $this->conn->prepare("SELECT account.username, # username from tbl account
 			CONCAT(user_info.firstname, ' ', user_info.lastname) AS name # first & last from user_info
 			FROM account RIGHT JOIN user_info # get all from right table (user_info)

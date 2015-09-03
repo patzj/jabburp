@@ -3,6 +3,11 @@ var basepath = 'http://localhost/jabburp/';
 var url = basepath + 'search/user'; // destination url for ajax/post
 
 function searchUser(search_key) {
+	if(search_key == '') { 
+		$('#search_output').empty();
+		return false;
+	} // no ajax will fire
+
 	var data = { data: search_key }; // set data for ajax/post
 	$.post(url, data, function(data, status) {
 		if(status == 'success') { // if success

@@ -11,21 +11,28 @@ class Home extends Controller {
 
 	function index() {
 		$data['title'] = 'Home';
+		$data['name'] = self::user()['name'];
+		$data['contact_list'] = self::contact_details();
 		$this->view = $this->load->view('Home_view', $data);
 	}
 
-	private function contact_id_list() {
+	private function user() {
+		$this->model = $this->load->model('Home_model');
+		return $this->model->get_contact_details($_SESSION['uid']);
+	}
+
+	private function contact_list() {
 		$data['uid'] = $_SESSION['uid'];
 
 		$this->model = $this->load->model('Home_model');
-		$result = $this->model->get_contact_id_list($data);
+		$result = $this->model->get_contact_list($data);
 
 		unset($this->model);
 		return $result; // could be false or array of uid's
 	}
 
-	function contact_details() {
-		$data = self::contact_id_list();
+	private function contact_details() {
+		$data = self::contact_list();
 		$this->model = $this->load->model('Home_model');
 		foreach($data as $uid) {
 			$result[] = $this->model->get_contact_details($uid);

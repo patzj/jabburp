@@ -2,7 +2,7 @@
 
 class Home_model extends Model {
 
-	function get_contact_id_list($data) {
+	function get_contact_list($data) {
 		extract($data);
 
 		$stmt = $this->conn->prepare("SELECT user2 FROM contact 

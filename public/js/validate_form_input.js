@@ -181,15 +181,17 @@ $(document).ready(function() {
 				validateGender();
 				break;
 			default:
+				console.log('no command yet.');
 				break;
 		}
 	});
 
 	$('#form_join').submit(function() {
  		validateAll() // run all validation functions before submit
-		if($('span.error').text() != '') { // if error found
-			console.log('errors');
-			return false; // restrict submit
-		}
+ 		setTimeout(function() { // just some buffer
+			if($('span.error').text() != '') { // if error found
+				return false; // restrict submit
+			}
+		}, 500);
 	});
 });
