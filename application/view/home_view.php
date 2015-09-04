@@ -7,19 +7,21 @@
 				<figure>
 					<img src="" style="width: 75px; height: 75px"/>
 				</figure>
-				<p><strong><?= $_SESSION['username'] ?></strong></p>
+				<h3><?= $_SESSION['username'] ?></h3>
 				<p><small><?= $name ?></small></p>
 			</article>
 		</section>
 		<section id="contact_list">
 			<?php foreach ($contact_list as $contact): ?>
-			<article class="contact">
-				<figure>
-					<img src="" style="width: 50px; height: 50px"/>
-				</figure>
-				<p><strong><?= $contact['username'] ?></strong><p>
-				<p><small><?= $contact['name'] ?></small></p>
-			</p>
+			<a href="">
+				<article class="contact">
+					<figure>
+						<img src="" style="width: 50px; height: 50px"/>
+					</figure>
+					<h4><?= $contact['username'] ?></h4>
+					<p><small><?= $contact['name'] ?></small></p>
+				</article>
+			</a>
 			<?php endforeach; ?>
 		</section>
 	</aside>
@@ -32,4 +34,5 @@
 		</form>
 	</section>
 </section>
+<script src="<?= BASEPATH ?>public/js/chat_client_controller.js"></script>
 

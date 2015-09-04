@@ -6,8 +6,8 @@ function addRequest() {
 	var data = { data: $('h3').text() }; // get h3 for ajax
 	$.post(url, data, function(data, status) { // ajax
 		if(status == 'success') { // if success
-			var json = eval('(' + data + ')'); // decode callback
-			if(json == true) { // if decoded is true
+			var response = eval('(' + data + ')'); // decode callback
+			if(response == true) { // if decoded is true
 				$('#btn_cs').val('pending').text('pending'); // change btn val
 				$('#btn_cs').prop({disabled: true}); // disable pending btn
 				$('#btn_cs').next().show(); // show null sibling btn
@@ -22,8 +22,8 @@ function removeStatus() { // this function will exec the pending stat removal
 	var data = { data: $('h3').text() }; // get the h3 tag; need for identifying w/c to remove
 	$.post(url, data, function(data, status) { // ajax 
 		if(status == 'success') { // if success
-			var json = eval('(' + data + ')'); // decode callback data
-			if(json == true) { // if decoded is true
+			var response = eval('(' + data + ')'); // decode callback data
+			if(response == true) { // if decoded is true
 				$('#btn_cs').val('add').text('add'); // change btn val
 				$('#btn_cs').prop({disabled: false}); // re-enable btn
 				$('#btn_cs').next().hide(); // hide sibling btn
@@ -37,8 +37,8 @@ function confirmRequest() { // this function will confirm the request
 	var data = { data: $('h3').text() }; // get h3 for post
 	$.post(url, data, function(data, status) { // ajax
 		if(status == 'success') { // if success
-			var json = eval('(' + data + ')'); // decode callback data
-			if(json == true) { // if true
+			var response = eval('(' + data + ')'); // decode callback data
+			if(response == true) { // if true
 				$('#btn_cs').val('remove').text('remove'); // change btn val
 				$('#btn_cs').next().hide(); // hide sibling btn
 
