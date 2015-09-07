@@ -9,21 +9,21 @@ class Contact extends Controller {
 		if(!isset($_SESSION['username'])) header('location: ' . BASEPATH . 'login');
 	}
 
-	function add() {
+	function add() { // send contact request
 		if(empty($_POST)) die('Direct script access not allowed.');
 
-		$current = $_SESSION['username'];
-		$other = $_POST['data'];
+		$current = $_SESSION['username']; // get current user
+		$other = $_POST['data']; // get username of other user; h3
 
 		$data = [
 			'current' => $current,
 			'other' => $other
-		];
+		]; // prepare data for db
 
-		$this->model = $this->load->model('Contact_model');
-		$result = $this->model->add_contact_req($data);
-		echo json_encode($result);
-		unset($this->model);
+		$this->model = $this->load->model('Contact_model'); // load contact model
+		$result = $this->model->add_contact_req($data); // pass result from db to var
+		echo json_encode($result); // encode result for ajax/post
+		unset($this->model); // unset model obj
 	}
 
 	function cancel() { // this will reject/cancel request
@@ -43,20 +43,20 @@ class Contact extends Controller {
 		unset($this->model); // unset model obj
 	}
 
-	function confirm() {
+	function confirm() { // confirm contact request
 		if(empty($_POST)) die('Direct script access not allowed.');
 
-		$current = $_SESSION['username'];
-		$other = $_POST['data'];
+		$current = $_SESSION['username']; // get current user
+		$other = $_POST['data']; // get other user; h3
 
 		$data = [
 			'current' => $current,
 			'other' => $other
-		];
+		]; // prepare data for db
 
-		$this->model = $this->load->model('Contact_model');
-		$result = $this->model->confirm_contact_req($data);
-		echo json_encode($result);
-		unset($this->model);
+		$this->model = $this->load->model('Contact_model'); // load contact model
+		$result = $this->model->confirm_contact_req($data); // pass result from db to var
+		echo json_encode($result); // encode result for ajax/post
+		unset($this->model); // unset model obj
 	}
 }

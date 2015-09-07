@@ -26,6 +26,7 @@
 		</section>
 	</aside>
 	<section id="chat_space">
+		<h4></h4>
 		<article id="chat_output">
 		</article>
 		<form id="form_chat" action="" method="post">
