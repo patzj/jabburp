@@ -5,7 +5,7 @@ class Chat_model extends Model {
 	function get_conversation_id($data) { // get conv_id between users
 		extract($data);
 		$current = (string)$current; // making sure that data are string
-		$other = (string)$other;
+		$other = (string)$other; // to match db format
 
 		$stmt = $this->conn->prepare("SELECT conv_id FROM conversation 
 			WHERE users = CONCAT(?, ', ', ?) 
@@ -46,13 +46,14 @@ class Chat_model extends Model {
 
 	function get_message($data) {
 		extract($data);
-		$current = (string)$current; // making sure that these two
-		$other = (string)$other; // will be strings
 
-		$stmt = $this->conn->prepare("SELECT * FROM message 
+		$stmt = $this->conn->prepare("SELECT message.msg_id, message.content, 
+			message.date_time, message.conv_id, account.username # i'm getting the username
+			FROM message LEFT JOIN account # from account table using left join;
+			ON message.user = account.uid # for display purposes on view
 			WHERE conv_id = (SELECT conv_id FROM conversation 
 			WHERE users = CONCAT(?, ', ', ?)
-			OR users = CONCAT(?, ', ', ?)) ORDER BY date_time LIMIT 50"); // please work
+			OR users = CONCAT(?, ', ', ?)) ORDER BY date_time LIMIT 50"); // does work
 		$stmt->bind_param('ssss', $current, $other, $other, $current);
 		$stmt->execute();
 		$result = $stmt->get_result();
@@ -65,14 +66,40 @@ class Chat_model extends Model {
 		}
 
 		unset($result);
-		$stmt->free_result();
 		$stmt->close();
 
 		return $data;
 	}
 
 	function insert_message($data) {
+		extract($data);
 
+		$stmt = $this->conn->prepare('INSERT INTO message(content, user, date_time, conv_id) 
+			VALUES(?, ?, NOW(), ?)');
+		$stmt->bind_param('sii', $message, $current, $conv_id);
+		$result = $stmt->execute();
+		$stmt->close();
+
+		return $result;
 	}
 
+	function max_message($conv_id) {
+		$conv_id = (int)$conv_id; // making sure this is int
+		$stmt = $this->conn->prepare('SELECT MAX(msg_id) FROM message 
+			WHERe conv_id = ?');
+		$stmt->bind_param('i', $conv_id);
+		$stmt->execute();
+		$stmt->store_result();
+
+		$result = false;
+		if($stmt->num_rows == 1) {
+			$stmt->bind_result($result);
+			$stmt->fetch();
+		}
+
+		$stmt->free_result();
+		$stmt->close();
+
+		return $result;
+	}
 }

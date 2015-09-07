@@ -20,4 +20,23 @@ class Helper_model extends model {
 
 		return $result;
 	}
+
+	function get_username($uid) {
+		$stmt = $this->conn->prepare('SELECT username from account 
+			WHERE uid = ?');
+		$stmt->bind_param('i', $uid);
+		$stmt->execute();
+		$stmt->store_result();
+
+		$result = false;
+		if($stmt->num_rows == 1) {
+			$stmt->bind_result($result);
+			$stmt->fetch();
+		}
+
+		$stmt->free_result();
+		$stmt->close();
+
+		return $result;
+	}
 }
