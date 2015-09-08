@@ -3,26 +3,15 @@ A simple web-based chat application for personal use. Name was derived from 'jab
 
 Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 
-#### Alpha 1.0
-- MVC routing (working)
-
-#### Alpha 1.1.1
+#### Alpha 1.1.6
 - Improved MVC routing
 - Registration Module - reworked
 - Log In/Log Out Module
-- Profile View Module
-- Search Module - partial
-
-#### Alpha 1.1.2
-- Profile View Module - partially improved
-- Search Module - partially improved
-
-#### Alpha 1.1.3
-- Partial Contact Module
-
-#### Alpha 1.1.4
+- Profile View Module - improved
+- Search Module - improved
+- Contact Module - improved atleast for profile view
 - HTML5 Semantics
 - HTML Standardization
 
-#### Alpha 1.1.5
-- Working Add/Remove Contact Module(atleast for profile view)
+#### Alpha 2.0
+- Working Chat Module

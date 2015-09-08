@@ -7,6 +7,7 @@ class Profile extends Controller {
 	
 		session_start();
 		if(!isset($_SESSION['username'])) header('location: ' . BASEPATH . 'login');
+		session_write_close();
 	}
 
 	function index() {

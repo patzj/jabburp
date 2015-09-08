@@ -37,6 +37,7 @@ class Login extends Controller {
 			session_start(); // start session
 			$_SESSION['uid'] = $result['uid'];
 			$_SESSION['username'] = $result['username']; // set session data
+			session_write_close();
 			header('location:' . BASEPATH); // redirect to home
 		} else {
 			$this->data['error_msg'] = 'Incorrect username or password.'; // add error msg

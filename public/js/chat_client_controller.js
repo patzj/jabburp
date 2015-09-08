@@ -2,10 +2,12 @@
 var basepath = 'http://localhost/jabburp/';
 
 function display_chat(other) { // other user param
-	var url = basepath + 'chat/display'; // target url
-	var data = { data: other }; // other user; selected h4 of current user
-	$.post(url, data, function(data, status) { // ajax/post
-		if(status == 'success') { // if success
+	// var url = basepath + 'chat/display'; // target url
+	// var data = { data: other }; // other user; selected h4 of current user
+	$.ajax({
+		url: basepath + 'chat/display',
+		data: { data: other },
+		success: function(data) { // if success
 			var response = eval('(' + data + ')'); // decode response from target url
 			var len = response.length;
 			var last_msg_id = 0;
@@ -21,40 +23,72 @@ function display_chat(other) { // other user param
 			} else console.log('null response.'); 
 
 			setTimeout(get_new(other, last_msg_id), 1000);
-		} else console.log('something went wrong.');
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log('something went wrong.');
+		}
 	});
 }
 
 function send_message(other, message) {
-	var url = basepath + 'chat/send';
-	var data = { data: [other, message] };
-	$.post(url, data, function(data, status) {
-		if(status == 'success') {
+	// var url = basepath + 'chat/send';
+	// var data = { data: [other, message] };
+	$.ajax({
+		url: basepath + 'chat/send',
+		data: { data: [other, message] },
+		success: function(data) {
 			var response = eval('(' + data + ')'); // got nothing to do with this
 			$('#txt_msg').val('');
-		} else {
+			console.log('sent');
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			$('#chat_output').append('<p>Unable to deliver message. ' + 
-				'Please refresh and try again.</p>');
+				'Please refresh append try again.</p>');
 		}
-	});	
+	});
 }
 
 function get_new(other, last_msg_id) {
-	var url = basepath + 'chat/recent';
-	var data = { data: [other, last_msg_id] };
-	$.post(url, data, function(data, status) {
-		if(status == 'success') {
+	// var url = basepath + 'chat/recent';
+	// var data = { data: [other, last_msg_id] };
+	$.ajax({
+		url: basepath + 'chat/recent',
+		data: { data: [other, last_msg_id] },
+		success: function(data) {
 			var response = eval('(' + data + ')');
 			var len = response.length;
 			if(len > 0) {
-				console.log(response);
-			} else console.log('null');
-		} else console.log('error');
+				for(var i in response) { // loop on response
+					$('#chat_output').append('<p>[' + response[i]['date_time'] + ']' + 
+						response[i]['username'] + ' says: ' +
+						response[i]['content'] + '</p>'); // display each msg response
+					last_msg_id = response[i]['msg_id']; // wil be set to the last msg_id thru loop
+				}
+			}
+			setTimeout(get_new(other, last_msg_id), 1000);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus);
+			setTimeout(get_new(other, last_msg_id), 5000);
+		}
 	});
 }
 
 // main method
 $(document).ready(function() {
+
+	$.ajaxSetup({
+		type: 'POST',
+		async: true,
+		cache: false,
+		global: false
+		// beforeSend: function(jqXHR) {
+		// 	$('a').click(function() {
+		// 		jqXHR.abort();
+		// 	});
+		// }
+	});
+
 	$('#contact_list a').click(function() { // if one on contact list is clicked/selected
 		var i = $(this).index(); // get index of clicked element
 		var other = $('h4').eq(i).text(); // get text/content of clicked element

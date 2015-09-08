@@ -7,6 +7,7 @@ class Chat extends Controller {
 
 		session_start();
 		if(!isset($_SESSION['username'])) header('location: ' . BASEPATH . 'login');
+		session_write_close();
 	}
 
 	function index() {
@@ -79,6 +80,7 @@ class Chat extends Controller {
 	}
 
 	function recent() {
+		set_time_limit(20);
 		extract($_POST);
 
 		$current = $_SESSION['uid'];
@@ -104,7 +106,22 @@ class Chat extends Controller {
 			$max_msg_id = (int)$this->model->max_message($conv_id);
 		}
 
-		echo json_encode('new msg arrived');
+		unset($data);
+		unset($this->model);
+
+		$data = [
+			'conv_id' => $conv_id,
+			'last_msg_id' => $last_msg_id
+		];
+
+		$this->model = $this->load->model('Chat_model');
+		$result = $this->model->new_message($data);
+
+		if($result) echo json_encode($result);
+		else echo json_encode('erro');
+
+		unset($result);
+		unset($this->model);
 	}
 
 	private function get_conversation_id($data) { // function to get conv_id between users

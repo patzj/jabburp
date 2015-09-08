@@ -102,4 +102,29 @@ class Chat_model extends Model {
 
 		return $result;
 	}
+
+	function new_message($data) {
+		extract($data);
+
+		$stmt = $this->conn->prepare("SELECT message.msg_id, message.content, 
+			message.date_time, message.conv_id, account.username # i'm getting the username
+			FROM message LEFT JOIN account # from account table using left join;
+			ON message.user = account.uid # for display purposes on view
+			WHERE conv_id = ? AND msg_id > ?"); // 	
+		$stmt->bind_param('ii', $conv_id, $last_msg_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		$data = false;
+		if($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$data[] = $row;
+			}
+		}
+
+		unset($result);
+		$stmt->close();
+
+		return $data;
+	}
 }
