@@ -51,3 +51,40 @@ CREATE TABLE IF NOT EXISTS message(
     FOREIGN KEY(conv_id) REFERENCES conversation(conv_id) ON DELETE CASCADE,
     PRIMARY KEY(msg_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+# table login_status
+CREATE TABLE IF NOT EXISTS login_status(
+    uid int(11) NOT NULL,
+    last_user_activity timestamp NOT NULL,
+    last_client_ping timestamp NOT NULL,
+    status enum('online', 'offline', 'busy', 'idle') DEFAULT 'offline',
+    CONSTRAINT fk_login_status
+    FOREIGN KEY(uid) REFERENCES account(uid),
+    PRIMARY KEY(uid)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+# event offline_status
+DELIMITER ||
+CREATE EVENT offline_status
+    ON SCHEDULE EVERY 5 MINUTE
+    DO
+        BEGIN
+            UPDATE login_status SET status = 'offline'
+            WHERE TIMESTAMPDIFF(SECOND, last_client_ping, NOW()) > 300;
+        END||
+DELIMITER ;
+
+SET GLOBAL event_scheduler = ON;
+
+# event idle_status
+DELIMITER ||
+CREATE EVENT idle_status
+    ON SCHEDULE EVERY 5 MINUTE
+    DO
+        BEGIN
+            UPDATE login_status SET status = 'idle'
+            WHERE TIMESTAMPDIFF(SECOND, last_user_activity, NOW()) > 300;
+        END||
+DELIMITER ;
+
+SET GLOBAL event_scheduler = ON;
