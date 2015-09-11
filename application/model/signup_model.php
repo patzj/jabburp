@@ -23,10 +23,17 @@ class Signup_model extends Model {
 
 			if($stmt->execute()) { // execute query; check for success/fail
 				$stmt->close(); // close prepared statement
-				return true;
+
+				$stmt = $this->conn->prepare("INSERT INTO login_status 
+					VALUES(?, NOW(), NOW(), 'offline')"); // initial login status
+				$stmt->bind_param('s', $last_id); // bind param
+				if($stmt->execute()) {
+					$stmt->close(); // execute query
+					return true;
+				}
 			}
 		}
-		$stmt->close(); // close prepared statement
+		$stmt->close(); // close prepared statement on 1st if fail
 		return false;
 	}
 

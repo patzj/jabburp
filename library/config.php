@@ -12,4 +12,4 @@ define('DEFAULT_ERR_CONTROLLER', 'error');
 define('DEFAULT_ACTION', 'index');
 
 // timezone
-date_default_timezone_set('UTC');
+date_default_timezone_set('UTC+8');

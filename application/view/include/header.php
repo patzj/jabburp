@@ -14,6 +14,7 @@ session_start();
 		<script src="<?= BASEPATH ?>public/js/html5shiv.min.js"></script>
 	<![endif]-->
 	<script src="<?= BASEPATH ?>public/js/jquery-1.11.3.min.js"></script>
+	<script src="<?= BASEPATH ?>public/js/login_status_controller.js"></script>
 </head>
 <body>
 <header>

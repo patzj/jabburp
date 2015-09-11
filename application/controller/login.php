@@ -7,11 +7,12 @@ class Login extends Controller {
 		parent::__construct();
 
 		session_start();
-		if(isset($_SESSION['username'])) header('location: ' . BASEPATH);
-		else session_destroy(); // destroy current session used for checking
 	}
 
 	function index() {
+		if(isset($_SESSION['username'])) header('location: ' . BASEPATH);
+		else session_destroy(); // destroy current session used for checking
+
 		$data = @$this->data; // set local data value from instance data
 		$data['title'] = 'Log In';
 		$this->view = $this->load->view('Login_view', $data);
@@ -33,7 +34,7 @@ class Login extends Controller {
 
 		$this->model = $this->load->model('Login_model'); // load login model
 		$result = $this->model->verify($data); // pass returned data
-		if($result != null) { // check data if null
+		if($result) { // check data if null/false
 			session_start(); // start session
 			$_SESSION['uid'] = $result['uid'];
 			$_SESSION['username'] = $result['username']; // set session data
@@ -44,5 +45,35 @@ class Login extends Controller {
 			self::index(); // return control to index
 		}
 
+	}
+
+	function client() { // ping from client to flag online status
+		$current = $_SESSION['uid']; // current uid of user
+
+		$this->model = $this->load->model('Login_model'); // load model
+		$result = $this->model->update_client_status($current); // true or false
+
+		echo json_encode($result);
+		unset($this->model);
+	}
+
+	function activity() { // update db the last activity from user
+		$current = $_SESSION['uid']; // current uid of user
+		
+		$this->model = $this->load->model('Login_model'); // load model
+		$result = $this->model->update_user_activity($current); // true or false
+
+		echo json_encode($result);
+		unset($this->model);
+	}
+
+	function idle() { // update db to idle on certain conditions
+		$current = $_SESSION['uid'];
+
+		$this->model = $this->load->model('Login_model'); // load model
+		$result = $this->model->update_status_idle($current); // true or false
+
+		echo json_encode($result);
+		unset($this->model);
 	}
 }

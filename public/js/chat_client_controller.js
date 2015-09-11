@@ -1,7 +1,7 @@
 "use strict";
 var basepath = 'http://localhost/jabburp/';
 
-function display_chat(other) { // other user param
+function displayChat(other) { // other user param
 	// var url = basepath + 'chat/display'; // target url
 	// var data = { data: other }; // other user; selected h4 of current user
 	$.ajax({
@@ -22,7 +22,7 @@ function display_chat(other) { // other user param
 				}
 			} else console.log('null response.'); 
 
-			setTimeout(get_new(other, last_msg_id), 1000);
+			setTimeout(getNew(other, last_msg_id), 1000);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log('something went wrong.');
@@ -30,7 +30,7 @@ function display_chat(other) { // other user param
 	});
 }
 
-function send_message(other, message) {
+function sendMessage(other, message) {
 	// var url = basepath + 'chat/send';
 	// var data = { data: [other, message] };
 	$.ajax({
@@ -48,7 +48,7 @@ function send_message(other, message) {
 	});
 }
 
-function get_new(other, last_msg_id) {
+function getNew(other, last_msg_id) {
 	// var url = basepath + 'chat/recent';
 	// var data = { data: [other, last_msg_id] };
 	$.ajax({
@@ -65,11 +65,11 @@ function get_new(other, last_msg_id) {
 					last_msg_id = response[i]['msg_id']; // wil be set to the last msg_id thru loop
 				}
 			}
-			setTimeout(get_new(other, last_msg_id), 1000);
+			setTimeout(getNew(other, last_msg_id), 1000);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log(textStatus);
-			setTimeout(get_new(other, last_msg_id), 5000);
+			setTimeout(getNew(other, last_msg_id), 5000);
 		}
 	});
 }
@@ -94,7 +94,7 @@ $(document).ready(function() {
 		var other = $('h4').eq(i).text(); // get text/content of clicked element
 		var last_msg_id = $('#chat_output').children('h4').text();
 
-		display_chat(other); // call display chat method
+		displayChat(other); // call display chat method
 		return false; // prevent page from loading
 	});
 
@@ -102,7 +102,7 @@ $(document).ready(function() {
 		var other = $('#chat_space').children('h4').text();
 		var message = $('#txt_msg').val();
 		if(other != '' && message != '') {
-			send_message(other, message);
+			sendMessage(other, message);
 		} return false;
 	});
 });

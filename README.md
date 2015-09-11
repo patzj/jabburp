@@ -15,3 +15,7 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 
 #### Alpha 2.0
 - Working Chat Module
+
+#### Alpha 2.0.1
+- Log In Status Module - partial
+- From .post to .ajax jQuery transition

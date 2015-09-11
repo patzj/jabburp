@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS login_status(
     last_user_activity timestamp NOT NULL,
     last_client_ping timestamp NOT NULL,
     status enum('online', 'offline', 'busy', 'idle') DEFAULT 'offline',
+    initiator enum('auto', 'manual') DEFAULT 'auto',
     CONSTRAINT fk_login_status
     FOREIGN KEY(uid) REFERENCES account(uid),
     PRIMARY KEY(uid)
@@ -70,20 +71,8 @@ CREATE EVENT offline_status
     DO
         BEGIN
             UPDATE login_status SET status = 'offline'
-            WHERE TIMESTAMPDIFF(SECOND, last_client_ping, NOW()) > 300;
-        END||
-DELIMITER ;
-
-SET GLOBAL event_scheduler = ON;
-
-# event idle_status
-DELIMITER ||
-CREATE EVENT idle_status
-    ON SCHEDULE EVERY 5 MINUTE
-    DO
-        BEGIN
-            UPDATE login_status SET status = 'idle'
-            WHERE TIMESTAMPDIFF(SECOND, last_user_activity, NOW()) > 300;
+            WHERE TIMESTAMPDIFF(SECOND, last_client_ping, NOW()) > 300 
+            AND initiator <> 'auto';
         END||
 DELIMITER ;
 
