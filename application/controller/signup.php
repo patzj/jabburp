@@ -21,7 +21,7 @@ class Signup extends Controller {
 	}
 
 	function validate() {
-		if(empty($_POST)) die('Direct script abs(number)ccess not allowed.');
+		if(empty($_POST)) die('Direct script access not allowed.');
 
 		$array_key = key($_POST); // get current array key from POST
 		switch($array_key) {

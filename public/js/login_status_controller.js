@@ -5,12 +5,10 @@ function setLastClientPing() { // ping server to flag online status
 	$.ajax({
 		url: basepath + 'login/client',
 		success: function(data) {
-			var response = eval('(' + data + ')');
-			console.log(response);
 			setTimeout(setLastClientPing, 300000); // will run every 5 mins
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			console.log(textStatus);
+			setTimeout(setLastClientPing, 5000); // re-attemp after 5 sec
 		}
 	})
 }
@@ -18,6 +16,32 @@ function setLastClientPing() { // ping server to flag online status
 function setLastUserActivity() { // update last user activity
 	$.ajax({
 		url: basepath + 'login/activity',
+		success: function(data) {
+			getLoginStatus();
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus);
+		}
+	});
+}
+
+function setAway() { // set away status on certain conditions
+	$.ajax({
+		url: basepath + 'login/away',
+		success: function(data) {
+			console.log(data);
+			setTimeout(setAway, 300000); // will run every 5 mins
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			setTimeout(setAway, 5000); // re-attemp after 5 sec
+		}
+	});
+}
+
+function setLoginStatus(status) { // set login status of current user
+	$.ajax({
+		url: basepath + 'login/set_status',
+		data: { data: status }, // dropdown value
 		success: function(data) {
 			var response = eval('(' + data + ')');
 			console.log(response);
@@ -28,18 +52,36 @@ function setLastUserActivity() { // update last user activity
 	});
 }
 
-function setIdle() {
+function getLoginStatus() { // get login status of current user
 	$.ajax({
-		url: basepath + 'login/idle',
+		url: basepath + 'login/get_status',
 		success: function(data) {
 			var response = eval('(' + data + ')');
-			console.log(response);
-			setTimeout(setIdle, 300000); // will run every 5 mins
+			var opt = 0;
+			switch(response) {
+				case 'active':
+					opt = 1;
+					break;
+				case 'away':
+					opt = 2;
+					break;
+				case 'busy':
+					opt = 3;
+					break;
+				case 'offline':
+					opt = 4;
+					break;
+				default:
+					opt = 0;
+					break;
+			}
+			var s = $('select').children().eq(opt).prop({selected: true});
+			setTimeout(getLoginStatus, 300000); // will run every 5 mins
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			console.log(textStatus);
+			setTimeout(getLoginStatus, 5000); // re-attemp after 5 sec
 		}
-	})
+	});
 }
 
 // main method
@@ -55,7 +97,8 @@ $(document).ready(function() {
 	var invalidPath = /\S+(login|logout|signup)+/i.test(path);
 	if(!invalidPath) { // will run if NOT login, logout and signup page
 		setLastClientPing();
-		setIdle();
+		setAway();
+		getLoginStatus();
 	}
 	// run update every input or link interaction
 	$('input').click(function() {
@@ -72,5 +115,9 @@ $(document).ready(function() {
 
 	$('textarea').focus(function() {
 		setLastUserActivity();
+	});
+
+	$('select').change(function() {
+		setLoginStatus($(this).val());
 	});
 });

@@ -9,6 +9,13 @@
 				</figure>
 				<h3><?= $_SESSION['username'] ?></h3>
 				<p><small><?= $name ?></small></p>
+				<select>
+					<option disabled></option>
+					<option value="active">active</option>
+					<option value="away">away</option>
+					<option value="busy">busy</option>
+					<option value="offline">appear offline</option>
+				</select>
 			</article>
 		</section>
 		<section id="contact_list">

@@ -1,5 +1,5 @@
 "use strict";
-var url = 'http://localhost/jabburp/signup/validate'; // destination url for ajax/post
+var basepath = 'http://localhost/jabburp/';
 
 // validation functions
 function validateUsername() { // var assignment not working on callback.. I wonder why
@@ -13,13 +13,15 @@ function validateUsername() { // var assignment not working on callback.. I wond
 			hasSpecialChars('#username') || hasWhiteSpace('#username')) { // or if contains special chars and spaces
 			$('#username').next().text('invalid');
 		} else {
-			var data = {username: $('#username').val()}; // set data for ajax/post
-			$.post(url, data, function(data, status) {
-				if(status == 'success') { // if success
-					var response = eval('(' + data + ')'); // get encoded result
+			$.ajax({
+				url: basepath + 'signup/validate',
+				data: { username: $('#username').val() },
+				success: function(data) {
+					var response = eval('(' + data + ')'); // decode callback data
 					$('#username').next().text(response); // display result
-				} else {
-					$('#username').next().text(status); // display status if err
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log(textStatus + ': ' + errorThrown);
 				}
 			});
 		}
@@ -57,13 +59,15 @@ function validateEmail() {
 		if(!validEmail || hasWhiteSpace('#email')) { // check...
 			$('#email').next().text('invalid');
 		} else {
-			var data = {email: $('#email').val()}; // set data for ajax/post
-			$.post(url, data, function(data, status){
-				if(status == 'success') { // if success
-					var response = eval('(' + data + ')'); // get encoded result
-					$('#email').next().text(response); // display result
-				} else {
-					$('#email').next().text(status); // display status if err
+			$.ajax({
+				url: basepath + 'signup/validate',
+				data: { email: $('#email').val() },
+				success: function(data) {
+					var response = eval('(' + data + ')'); // decode callback data
+					$('#email').next().text(response);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log(textStatus + ': ' + errorThrown);
 				}
 			});
 		}
@@ -154,6 +158,13 @@ function hasSpecialCharsV2(selector) { // for checking special chars; dash, sing
 
 // main method
 $(document).ready(function() {
+	$.ajaxSetup({
+		type: 'POST',
+		async: true,
+		cache: false,
+		global: false
+	});
+
 	$('input').blur(function() { // run function depending on input blurred
 		switch($(this).attr('name')) {
 			case 'username':

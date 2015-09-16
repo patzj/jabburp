@@ -17,7 +17,7 @@ class Login_model extends Model {
 			$stmt->fetch(); // fetch the stored data
 			$stmt->free_result(); // free stored results
 			$stmt->close();
-			$stmt = $this->conn->prepare("UPDATE login_status SET status = 'online' 
+			$stmt = $this->conn->prepare("UPDATE login_status SET status = 'active' 
 				WHERE uid = ?");
 			$stmt->bind_param('i', $uid);
 			if($stmt->execute()) {
@@ -34,6 +34,37 @@ class Login_model extends Model {
 		return $data; // return data; either null/false or assoc array
 	}
 
+	function set_login_status($data) {
+		extract($data);
+
+		$stmt = $this->conn->prepare('UPDATE login_status SET status = ? 
+			WHERE uid = ?');
+		$stmt->bind_param('si', $status, $uid);
+		$result = $stmt->execute();
+		$stmt->close();
+
+		return $result;
+	}
+
+	function get_login_status($uid) {
+		$stmt = $this->conn->prepare('SELECT status FROM login_status 
+			WHERE uid = ?');
+		$stmt->bind_param('i', $uid);
+		$stmt->execute();
+		$stmt->store_result();
+
+		$result = false;
+		if($stmt->num_rows == 1) {
+			$stmt->bind_result($result);
+			$stmt->fetch();
+		}
+
+		$stmt->free_result();
+		$stmt->close();
+
+		return $result;
+	}
+
 	function update_client_status($uid) {
 		$stmt = $this->conn->prepare('UPDATE login_status SET last_client_ping = NOW() 
 			WHERE uid = ?'); // update last ping for sql event condition
@@ -46,7 +77,7 @@ class Login_model extends Model {
 
 	function update_user_activity($uid) {
 		$stmt = $this->conn->prepare("UPDATE login_status SET last_user_activity = NOW(), 
-			status = 'online' WHERE uid = ? AND status <> 'busy'"); // update last user act for status condition
+			status = 'active' WHERE uid = ? AND status <> 'busy'"); // update last user act for status condition
 		$stmt->bind_param('i', $uid); // bind param
 		$result = $stmt->execute(); // execute
 		$stmt->close(); // close prepare statement
@@ -54,7 +85,7 @@ class Login_model extends Model {
 		return $result;
 	}
 
-	function update_status_idle($uid) {
+	function update_status_away($uid) {
 		$stmt = $this->conn->prepare('SELECT last_user_activity FROM login_status 
 			WHERE uid = ?'); // prepare query; last user activity time log
 		$stmt->bind_param('i', $uid); // bind param
@@ -72,9 +103,9 @@ class Login_model extends Model {
 		$time_diff = (mktime() - strtotime($last_user_activity)); // get diff bet. now and last user activity
 
 		$result = false; // inital result value
-		if($time_diff > 300) {
-			$stmt = $this->conn->prepare("UPDATE login_status SET status = 'idle' 
-				WHERE uid = ? AND status <> 'busy'"); // 2nd query for setting idle status
+		if($time_diff >= 300) {
+			$stmt = $this->conn->prepare("UPDATE login_status SET status = 'away' 
+				WHERE uid = ? AND status <> 'busy'"); // 2nd query for setting away status
 			$stmt->bind_param('i', $uid); // bind param
 			$result = $stmt->execute(); // execute
 			$stmt->close(); // close prepared statement

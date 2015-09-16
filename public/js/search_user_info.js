@@ -8,12 +8,12 @@ function searchUser(search_key) {
 		return false;
 	} // no ajax will fire
 
-	var data = { data: search_key }; // set data for ajax/post
-	$.post(url, data, function(data, status) {
-		if(status == 'success') { // if success
-			var response = eval('(' + data + ')'); // get encoded result
-			var len = response.length;
-			if(len > 0) {
+	$.ajax({
+		url: basepath + 'search/user',
+		data: { data: search_key },
+		success: function(data) {
+			var response = eval('(' + data + ')');
+			if(response.length > 0) {
 				$('#search_output').empty(); // clear prev results
 				for(var i in response) { // loop on response elements
 					$('#search_output').append('<p class="result" <img src="" alt="avatar"/>&nbsp;' +
@@ -25,15 +25,22 @@ function searchUser(search_key) {
 				$('#search_output').empty(); // clear prev results
 				$('#search_output').append('<p class="result">No results found.</p>') // no results found
 			}
-		} else {
-			console.log('error'); // display status if err
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + ': ' + errorThrown);
 		}
 	});
 }
 
 $(document).ready(function() { // main method
+	$.ajaxSetup({
+		type: 'POST',
+		async: true,
+		cache: false,
+		global: false
+	});
+
 	$('#search_key').keyup(function() { // exec if something is written
 		searchUser($(this).val()); // pass search_key to function
-		//console.log($(this).val());
 	});
 });

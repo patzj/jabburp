@@ -2,43 +2,49 @@
 var basepath = 'http://localhost/jabburp/';
 
 function addRequest() {
-	var url = basepath + 'contact/add'; // destination url
-	var data = { data: $('h3').text() }; // get h3 for ajax
-	$.post(url, data, function(data, status) { // ajax
-		if(status == 'success') { // if success
-			var response = eval('(' + data + ')'); // decode callback
-			if(response == true) { // if decoded is true
+	$.ajax({
+		url: basepath + 'contact/add',
+		data: { data: $('h3').text() },
+		success: function(data) {
+			var response = eval('(' + data + ')'); // decode call back data
+			if(response) { // if data is true
 				$('#btn_cs').val('pending').text('pending'); // change btn val
 				$('#btn_cs').prop({disabled: true}); // disable pending btn
 				$('#btn_cs').next().show(); // show null sibling btn
 				$('#btn_cs').next().val('cancel').text('cancel'); // set sibling val
-			} else console.log('error');
-		} else console.log(status);
-	});
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + ': ' + errorThrown);
+		}
+	})
 }
 
 function removeStatus() { // this function will exec the pending stat removal
-	var url = basepath + 'contact/cancel'; // destination url
-	var data = { data: $('h3').text() }; // get the h3 tag; need for identifying w/c to remove
-	$.post(url, data, function(data, status) { // ajax 
-		if(status == 'success') { // if success
+	$.ajax({
+		url: basepath + 'contact/cancel',
+		data: { data: $('h3').text() },
+		success: function(data) {
 			var response = eval('(' + data + ')'); // decode callback data
-			if(response == true) { // if decoded is true
+			if(response) { // if true
 				$('#btn_cs').val('add').text('add'); // change btn val
 				$('#btn_cs').prop({disabled: false}); // re-enable btn
 				$('#btn_cs').next().hide(); // hide sibling btn
-			} else console.log('error');
-		} else console.log(status);
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + ': ' + errorThrown);
+		}
 	});
 }
 
 function confirmRequest() { // this function will confirm the request
-	var url = basepath + 'contact/confirm'; // destination url
-	var data = { data: $('h3').text() }; // get h3 for post
-	$.post(url, data, function(data, status) { // ajax
-		if(status == 'success') { // if success
+	$.ajax({
+		url: basepath + 'contact/confirm',
+		data: { data: $('h3').text() },
+		success: function(data) {
 			var response = eval('(' + data + ')'); // decode callback data
-			if(response == true) { // if true
+			if(response) { // if true
 				$('#btn_cs').val('remove').text('remove'); // change btn val
 				$('#btn_cs').next().hide(); // hide sibling btn
 
@@ -46,12 +52,22 @@ function confirmRequest() { // this function will confirm the request
 				setTimeout(function() { 
 					$('#btn_cs').prop({disabled: false});
 				}, 3000); // re-enable after 3 sec
-			} else console.log('error');
-		} else console.log(status);
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + ': ' + errorThrown);
+		}
 	});
 }
 
 $(document).ready(function() { // main method
+	$.ajaxSetup({
+		type: 'POST',
+		async: true,
+		cache: false,
+		global: false
+	});
+
 	switch($('#btn_cs').val()) {
 		case 'add': // hide sibling btn if status is add/no rel
 			$('#btn_cs').next().hide();

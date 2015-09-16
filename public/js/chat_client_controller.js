@@ -2,8 +2,6 @@
 var basepath = 'http://localhost/jabburp/';
 
 function displayChat(other) { // other user param
-	// var url = basepath + 'chat/display'; // target url
-	// var data = { data: other }; // other user; selected h4 of current user
 	$.ajax({
 		url: basepath + 'chat/display',
 		data: { data: other },
@@ -31,8 +29,6 @@ function displayChat(other) { // other user param
 }
 
 function sendMessage(other, message) {
-	// var url = basepath + 'chat/send';
-	// var data = { data: [other, message] };
 	$.ajax({
 		url: basepath + 'chat/send',
 		data: { data: [other, message] },
@@ -49,8 +45,6 @@ function sendMessage(other, message) {
 }
 
 function getNew(other, last_msg_id) {
-	// var url = basepath + 'chat/recent';
-	// var data = { data: [other, last_msg_id] };
 	$.ajax({
 		url: basepath + 'chat/recent',
 		data: { data: [other, last_msg_id] },

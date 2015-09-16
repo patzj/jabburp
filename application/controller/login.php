@@ -35,9 +35,10 @@ class Login extends Controller {
 		$this->model = $this->load->model('Login_model'); // load login model
 		$result = $this->model->verify($data); // pass returned data
 		if($result) { // check data if null/false
+			extract($result);
 			session_start(); // start session
-			$_SESSION['uid'] = $result['uid'];
-			$_SESSION['username'] = $result['username']; // set session data
+			$_SESSION['uid'] = $uid;
+			$_SESSION['username'] = $username; // set session data
 			session_write_close();
 			header('location:' . BASEPATH); // redirect to home
 		} else {
@@ -45,6 +46,30 @@ class Login extends Controller {
 			self::index(); // return control to index
 		}
 
+	}
+
+	function set_status() {
+		$uid = $_SESSION['uid'];
+		$status = $_POST['data']; // value from drop down
+
+		$data = [
+			'uid' => $uid,
+			'status' => $status
+		]; // data for model
+
+		$this->model = $this->load->model('Login_model'); // load model obj
+		$result = $this->model->set_login_status($data); // result from model
+
+		echo json_encode($result); // encode result for ajax
+		unset($this->model); // unset model obj
+	}
+
+	function get_status() {
+		$this->model = $this->load->model('Login_model');
+		$result = $this->model->get_login_status($_SESSION['uid']);
+
+		echo json_encode($result);
+		unset($this->model);
 	}
 
 	function client() { // ping from client to flag online status
@@ -67,11 +92,11 @@ class Login extends Controller {
 		unset($this->model);
 	}
 
-	function idle() { // update db to idle on certain conditions
+	function away() { // update db to away on certain conditions
 		$current = $_SESSION['uid'];
 
 		$this->model = $this->load->model('Login_model'); // load model
-		$result = $this->model->update_status_idle($current); // true or false
+		$result = $this->model->update_status_away($current); // true or false
 
 		echo json_encode($result);
 		unset($this->model);
