@@ -10,6 +10,10 @@ class Contact extends Controller {
 		session_write_close();
 	}
 
+	function index() {
+		die('Page not available');
+	}
+
 	function add() { // send contact request
 		if(empty($_POST)) die('Direct script access not allowed.');
 

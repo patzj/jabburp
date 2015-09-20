@@ -2,20 +2,7 @@
 
 class Profile_model extends Model {
 
-	function retrieve($user) {
-		$stmt = $this->conn->prepare('SELECT uid, email FROM account 
-			WHERE username=?'); // prepare query for account 
-		$stmt->bind_param('s', $user); // bind param
-		$stmt->execute(); // execute query
-		$stmt->store_result(); // store results
-
-		if($stmt->num_rows == 1) { // check num of rows returned
-			$stmt->bind_result($uid, $email); // bind stored data
-			$stmt->fetch(); // fetch stored data
-			$stmt->free_result(); // free stored data
-			$stmt->close(); // close prepare statement
-		} else return false; // stop further script exec; return false if no rows returned
-
+	function get_user_info($uid) {
 		$stmt = $this->conn->prepare('SELECT * FROM user_info 
 			WHERE uid=?'); // prepare query for user_info
 		$stmt->bind_param('i', $uid); // bind param
@@ -28,8 +15,20 @@ class Profile_model extends Model {
 			}
 		} else return false; // return false if no rows returned
 
-		$data['email'] = $email; // additional info
-
 		return $data;
+	}
+
+	function update_user_info($data, $uid) {
+		extract($data);
+
+		$stmt = $this->conn->prepare('UPDATE user_info 
+			SET firstname = ?, lastname = ?, gender = ?, about = ? 
+			WHERE uid = ?');
+		$stmt->bind_param('ssssi', $firstname, $lastname, $gender, $about, $uid);
+		$result = $stmt->execute();
+
+		$stmt->close();
+
+		return $result;
 	}
 }

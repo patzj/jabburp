@@ -117,6 +117,11 @@ function validateGender() {
 	$('label[for=gender]').nextAll('span.error').text(result);
 }
 
+function counterAbout() {
+	var len = $('#about').val().length;
+	$('#about_counter').val(255 - len);
+}
+
 function validateAll() { // all in one validation
 	validateUsername();
 	validatePassword();
@@ -165,6 +170,8 @@ $(document).ready(function() {
 		global: false
 	});
 
+	$('#about_counter').val(255);
+
 	$('input').blur(function() { // run function depending on input blurred
 		switch($(this).attr('name')) {
 			case 'username':
@@ -197,7 +204,11 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#form_join').submit(function() {
+	$('#about').keyup(function() {
+		counterAbout();
+	});
+
+	$('#form_signup').submit(function() {
  		validateAll() // run all validation functions before submit
  		setTimeout(function() { // just some buffer
 			if($('span.error').text() != '') { // if error found
@@ -205,4 +216,16 @@ $(document).ready(function() {
 			}
 		}, 500);
 	});
+
+	$('#form_edit_profile').submit(function() {
+		validateFirstname();
+		validateLastname();
+		validateGender(); // some validations
+		setTimeout(function() { // buffer
+			if($('span.error').text != '') { // if error found
+				return false;
+			}
+		}, 500);
+	});
+
 });

@@ -11,15 +11,19 @@ class Profile extends Controller {
 	}
 
 	function index() {
-		$data['title'] = $_SESSION['username'];
+		die('Page not available.');
 	}
 
 	function view() {
 		$username = $this->helper->url_segment(2); // get profile username from url
 		if($username == null) die('Error. Do not mess with the URL.'); // stop script
 
+		$this->model = $this->load->model('Helper_model'); // helper model obj
+		$uid = $this->model->get_uid($username);
+		unset($this->model);
+
 		$this->model = $this->load->model('Profile_model'); // load model obj
-		$result = $this->model->retrieve($username); // pass returned data to result
+		$result = $this->model->get_user_info($uid); // pass returned data to result
 		unset($this->model); // early unset; will use in contact_stat
 
 		if($result) { // check if result is not false

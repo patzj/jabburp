@@ -10,19 +10,20 @@ class Home extends Controller {
 		session_write_close();
 	}
 
-	function index() {
+	function index() { 
 		$data['title'] = 'Home';
 		$data['name'] = self::user()['name'];
 		$data['contact_list'] = self::contact_details();
 		$this->view = $this->load->view('Home_view', $data);
+		unset($this->view);
 	}
 
-	private function user() {
+	private function user() { // get user info using uid
 		$this->model = $this->load->model('Home_model');
 		return $this->model->get_contact_details($_SESSION['uid']);
 	}
 
-	private function contact_list() {
+	private function contact_list() { // get contact list using uid
 		$data['uid'] = $_SESSION['uid'];
 
 		$this->model = $this->load->model('Home_model');
@@ -32,7 +33,7 @@ class Home extends Controller {
 		return $result; // could be false or array of uid's
 	}
 
-	private function contact_details() {
+	private function contact_details() { // get details of contacts
 		$data = self::contact_list();
 		$this->model = $this->load->model('Home_model');
 		foreach($data as $uid) {

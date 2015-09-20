@@ -3,12 +3,12 @@
 	<figure id="avatar_container">
 		<img id="avatar" src="" alt="<?= @$data['username'] ?>'s avatar"/>
 	</figure><!-- end avatar_container -->
-	<article id="user_info">
+	<article class="user_info">
 		<h3><?= @$data['username'] ?></h3>
 		<?php
 		if(@$_SESSION['username'] == @$data['username']):
 		?>
-		<a href="<?= BASEPATH ?>profile/edit/<?= @$_SESSION['username'] ?>">Edit</a>
+		<a href="<?= BASEPATH ?>edit/profile">Edit</a>
 		<?php else: ?>
 		<div class="contact_status">
 			<button id="btn_cs" value="<?= @$data['button'][0] ?>"><?= @$data['button'][0] ?></button>
@@ -29,6 +29,12 @@
 				<td><?= @$data['about'] ?></td>
 			</tr>
 		</table>
+		<?php
+		if(@$_SESSION['username'] == $data['username']):
+		?>
+		<a href="<?= BASEPATH ?>edit/email">Change email</a><br/>
+		<a href="<?= BASEPATH ?>edit/password">Change password</a>
+		<?php endif; ?>
 	</article><!-- end user_info -->
 </section><!-- end profile_main -->
 <script src="<?= BASEPATH ?>public/js/user_contact_status.js"></script>
