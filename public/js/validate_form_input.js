@@ -50,6 +50,12 @@ function validateCPassword() {
 	$('#c_password').next().text(result);
 }
 
+function validateOPassword() {
+	var result = '';
+	if(isEmpty('#o_password')) result = '*';
+	$('#o_password').next().text(result);
+}
+
 function validateEmail() {
 	$('#email').next().text('');
 	if(isEmpty('#email')) { // check if empty
@@ -65,6 +71,29 @@ function validateEmail() {
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
 					$('#email').next().text(response);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log(textStatus + ': ' + errorThrown);
+				}
+			});
+		}
+	}
+}
+
+function validateEmailNoChanges() { // if input email if same with current on db
+	// $('#email').next().text('');
+	if(isEmpty('#email')) {
+		$('#email').next().text('*');
+	} else {
+		var validEmail = /\S+@\S+\.\S+/g.test($('#email').val()); // temp checker just to patch things up
+		if(!validEmail || hasWhiteSpace('#email')) {
+			$('#email').next().text('invalid');
+		} else {
+			$.ajax({
+				url: basepath + 'edit/validate',
+				data: { email: $('#email').val() },
+				success: function(data) {
+					var response = eval('(' + data + ')');
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log(textStatus + ': ' + errorThrown);
@@ -183,8 +212,12 @@ $(document).ready(function() {
 			case 'c_password':
 				validateCPassword();
 				break;
+			case 'o_password':
+				validateOPassword();
+				break;
 			case 'email':
 				validateEmail();
+				if($('#form_change_email') == 1) validateEmailNoChanges(); // if on change email page
 				break;
 			case 'c_email':
 				validateCEmail();
@@ -209,23 +242,28 @@ $(document).ready(function() {
 	});
 
 	$('#form_signup').submit(function() {
- 		validateAll() // run all validation functions before submit
- 		setTimeout(function() { // just some buffer
-			if($('span.error').text() != '') { // if error found
-				return false; // restrict submit
-			}
-		}, 500);
+		if($('span.error').text() != '') return false; // restrict submit
 	});
 
 	$('#form_edit_profile').submit(function() {
 		validateFirstname();
 		validateLastname();
 		validateGender(); // some validations
-		setTimeout(function() { // buffer
-			if($('span.error').text != '') { // if error found
-				return false;
-			}
-		}, 500);
+		if($('span.error').text() != '') return false; // restrict submit
+	});
+
+	$('#form_change_email').submit(function() {
+		validateEmailNoChanges();
+		validateEmail();
+		validateCEmail();
+		if($('span.error').text() != '') return false; // restrict submit
+	});
+
+	$('#form_change_password').submit(function() {
+		validateOPassword();
+		validatePassword();
+		validateCPassword();
+		if($('span.error').text() != '') return false; // restrict submit
 	});
 
 });

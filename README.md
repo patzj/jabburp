@@ -19,3 +19,6 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 #### Alpha 2.0.1
 - Log In Status Module - partial
 - From .post to .ajax jQuery transition
+
+#### Alpha 2.0.2
+- Edit User and Account Data Module

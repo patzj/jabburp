@@ -8,5 +8,5 @@
 		<input type="submit" id="btn_login" name="btn_login" value="Log In">&nbsp;<span>or</span>&nbsp;
 		<a href="<?= BASEPATH ?>signup" id="link_signup">Sign Up</a>
 	</form>
-	<p class='error'><?= @$data['error_msg'] ?></p>
+	<p class='server_error'><?= @$data['error'] ?></p>
 </section><!-- end login_main -->

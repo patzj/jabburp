@@ -3,21 +3,21 @@
 class Signup extends Controller {
 	private $data;
 
-	function __construct() {
-		parent::__construct();
-
-		session_start();
-		if(isset($_SESSION['username'])) header('location: ' . BASEPATH);
-		else session_destroy(); // destroy current session used for checking
-	}
-
 	function index() {
+		self::session(); // redirect to home page if logged in
+
 		$data = @$this->data; // set local data value from instance data
 		$data['title'] = 'Sign Up'; 
 		$this->view = $this->load->view('Signup_view', $data);
 		unset($data); // unset local data
 		unset($this->data); // unset instance data
 		unset($this->view); // unset view obj
+	}
+
+	private function session() {
+		session_start();
+		if(isset($_SESSION['username'])) header('location: ' . BASEPATH);
+		else session_destroy(); // destroy current session used for checking
 	}
 
 	function validate() {
@@ -37,7 +37,7 @@ class Signup extends Controller {
 		}
 	}
 
-	function check_availability($column, $key) {
+	private function check_availability($column, $key) {
 		$data = [
 			'column' => $column,
 			'key' => $key
@@ -50,6 +50,8 @@ class Signup extends Controller {
 	}
 
 	function submit() {
+		self::session(); // redirect to home page if logged in
+
 		if(empty($_POST)) die('Direct script access not allowed.');
 		extract($_POST); // retrieve data
 		
@@ -72,13 +74,15 @@ class Signup extends Controller {
 			self::success(); // pass control to success
 		} else {
 			$this->data = $_POST; // set POST content to instance data
-			$this->data['error_msg'] = 'Something went wrong. Please check input.'; // add error msg
+			$this->data['error'] = 'Something went wrong. Please check input.'; // add error msg
 			unset($data); // unset local data
 			self::index(); // loop control to index
 		}
 	}
 
 	function success() {
+		self::session(); // redirect to home page if logged in
+
 		$data['title'] = 'Sign Up';
 		$this->load->view('Signup_success_view', $data);
 		unset($data); // unset local data

@@ -1,6 +1,6 @@
 <?php if(!defined('BASEPATH')) die('Direct script access not allowed'); ?>
 <section id="edit_profile_main">
-	<form id="form_edit_profile" action="<?= BASEPATH ?>edit/save_profile" method="post">
+	<form id="form_edit_profile" action="<?= BASEPATH ?>edit/update_profile" method="post">
 		<label for="firstname">Firstname:</label>
 		<input type="text" id="firstname" name="firstname" maxlength="32" value="<?= @$data['firstname'] ?>"/>
 		<span class="error"></span><br/>
@@ -26,6 +26,6 @@
 
 		<input type="submit" id="btn_save_profile" name="btn_save_profile" value="Save"/>
 	</form>
-	<span class="error"><?= @$data['error'] ?></span>
+	<span class="server_error"><?= @$data['error'] ?></span>
 </section>
 <script src="<?= BASEPATH ?>public/js/validate_form_input.js"></script>

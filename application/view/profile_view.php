@@ -28,13 +28,19 @@
 				<td>About:</td>
 				<td><?= @$data['about'] ?></td>
 			</tr>
-		</table>
 		<?php
 		if(@$_SESSION['username'] == $data['username']):
 		?>
-		<a href="<?= BASEPATH ?>edit/email">Change email</a><br/>
-		<a href="<?= BASEPATH ?>edit/password">Change password</a>
+			<tr>
+				<td>Email:</td>
+				<td><?= @$data['email'] ?>&nbsp;<a href="<?= BASEPATH ?>edit/email">Change email</a></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td>****&nbsp;<a href="<?= BASEPATH ?>edit/password">Change password</a></td>
+			</tr>
 		<?php endif; ?>
+		</table>
 	</article><!-- end user_info -->
 </section><!-- end profile_main -->
 <script src="<?= BASEPATH ?>public/js/user_contact_status.js"></script>

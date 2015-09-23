@@ -42,7 +42,7 @@ class Login extends Controller {
 			session_write_close();
 			header('location:' . BASEPATH); // redirect to home
 		} else {
-			$this->data['error_msg'] = 'Incorrect username or password.'; // add error msg
+			$this->data['error'] = 'Incorrect username or password.'; // add error msg
 			self::index(); // return control to index
 		}
 

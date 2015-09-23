@@ -35,8 +35,6 @@
 		<span class="error"></span><br/>
 		<input type="submit" id="btn_signup" name="btn_signup" value="Sign Up"/>
 	</form>
-	<p class="error">
-		<?= @$data['error_msg'] ?>
-	</p>
+	<p class="server_error"><?= @$data['error'] ?></p>
 </section><!-- end signup_main -->
 <script src="<?= BASEPATH ?>public/js/validate_form_input.js"></script>

@@ -4,7 +4,6 @@ class Signup_model extends Model {
 
 	function insert($data){
 		extract($data); // extract passed data from controller
-		unset($data); // unset data
 		$date = date("Y-m-d"); // get current date
 
 		$stmt = $this->conn->prepare('INSERT INTO account
@@ -39,7 +38,6 @@ class Signup_model extends Model {
 
 	function validate($data) {
 		extract($data); // extract POST
-		unset($data);
 
 		$stmt = $this->conn->prepare("SELECT * FROM account
 			WHERE $column = ?"); // prepare query for account
@@ -52,6 +50,7 @@ class Signup_model extends Model {
 
 		$stmt->free_result(); // free stored result
 		$stmt->close(); // close prepared statement
+		
 		return $result;
 	}
 }

@@ -14,6 +14,23 @@ class Profile_model extends Model {
 				$data = $row; // pass row content to data array
 			}
 		} else return false; // return false if no rows returned
+		$stmt->close(); // close current prepare statement
+
+		$stmt = $this->conn->prepare('SELECT email FROM account 
+			WHERE uid=?'); // prepare query to get email
+		$stmt->bind_param('i', $uid); // bind param
+		$stmt->execute(); // execute
+		$stmt->store_result(); // store result
+
+		if($stmt->num_rows == 1) { // if returned num of rows is 1
+			$stmt->bind_result($email); // bind result
+			$stmt->fetch(); // fetch stored result
+		}
+
+		$stmt->free_result(); // free stored result
+		$stmt->close(); // close prepare statement
+
+		$data['email']  = $email; // add email to existing data array
 
 		return $data;
 	}
@@ -23,11 +40,11 @@ class Profile_model extends Model {
 
 		$stmt = $this->conn->prepare('UPDATE user_info 
 			SET firstname = ?, lastname = ?, gender = ?, about = ? 
-			WHERE uid = ?');
-		$stmt->bind_param('ssssi', $firstname, $lastname, $gender, $about, $uid);
-		$result = $stmt->execute();
+			WHERE uid = ?'); // prepare query 
+		$stmt->bind_param('ssssi', $firstname, $lastname, $gender, $about, $uid); // bind param
+		$result = $stmt->execute(); // execute
 
-		$stmt->close();
+		$stmt->close(); // close prepare statement
 
 		return $result;
 	}
