@@ -1,24 +1,31 @@
 "use strict";
 var basepath = 'http://localhost/jabburp/';
+var icon = "glyphicon glyphicon-remove";
+var group = "has-error";
 
 // validation functions
 function validateUsername() { // var assignment not working on callback.. I wonder why
-	$('#username').next().text('');
-	if(isEmpty('#username')) { // check if empty
-		$('#username').next().text('*');
+	var elem = '#username';
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
 	} else { // username is not empty but...
-		if(isTooShort('#username', 4)) { // check if too short
-			$('#username').next().text('too short');
-		} else if(isIndexNumeric('#username', 0) || // check first char if numeric
-			hasSpecialChars('#username') || hasWhiteSpace('#username')) { // or if contains special chars and spaces
-			$('#username').next().text('invalid');
+		if(isTooShort(elem, 4)) { // check if too short
+			hasError = true;
+		} else if(isIndexNumeric(elem, 0) || // check first char if numeric
+			hasSpecialChars(elem) || hasWhiteSpace(elem)) { // or if contains special chars and spaces
+			hasError = true;
 		} else {
 			$.ajax({
 				url: basepath + 'signup/validate',
-				data: { username: $('#username').val() },
+				data: { username: $(elem).val() },
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
-					$('#username').next().text(response); // display result
+					if(response == 'not available') {
+						$(elem).next().addClass(icon);
+						$(elem).parent().addClass(group);
+					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log(textStatus + ': ' + errorThrown);
@@ -26,28 +33,36 @@ function validateUsername() { // var assignment not working on callback.. I wond
 			});
 		}
 	}
+
+	return { hasError: hasError, elem: elem };
 }
 
 function validatePassword() {
-	var result = '';
-	if(isEmpty('#password')) { // check if empty
-		result = '*';
-	} else if(isTooShort('#password', 6)) { // check if too short
-		result = 'too short';
-	} else if(hasWhiteSpace('#password')) { // check for spaces
-		result = 'invalid'
+	var elem = '#password';
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
+	} else if(isTooShort(elem, 6)) { // check if too short
+		hasError = true;
+	} else if(hasWhiteSpace(elem)) { // check for spaces
+		hasError = true;
 	}
-	$('#password').next().text(result);
+
+	return { hasError: hasError, elem: elem };
 }
 
 function validateCPassword() {
-	var result = '';
-	if(isEmpty('#c_password')) { // check if empty
-		result = '*';
-	} else if($('#c_password').val() != $('#password').val()) { // check password mismatch
-		result = 'password mismatch';
+	var elem = '#c_password';
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
+	} else if($(elem).val() != $('#password').val()) { // check password mismatch
+		hasError = true;
 	}
-	$('#c_password').next().text(result);
+	
+	return { hasError: hasError, elem: elem };
 }
 
 function validateOPassword() {
@@ -57,20 +72,25 @@ function validateOPassword() {
 }
 
 function validateEmail() {
-	$('#email').next().text('');
-	if(isEmpty('#email')) { // check if empty
-		$('#email').next().text('*');
+	var elem = "#email";
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
 	} else { // email is not empty but...
-		var validEmail = /\S+@\S+\.\S+/g.test($('#email').val()); // temp checker just to patch things up
-		if(!validEmail || hasWhiteSpace('#email')) { // check...
-			$('#email').next().text('invalid');
+		var validEmail = /\S+@\S+\.\S+/g.test($(elem).val()); // temp checker just to patch things up
+		if(!validEmail || hasWhiteSpace(elem)) { // check...
+			hasError = true;
 		} else {
 			$.ajax({
 				url: basepath + 'signup/validate',
-				data: { email: $('#email').val() },
+				data: { email: $(elem).val() },
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
-					$('#email').next().text(response);
+					if(response == 'not available') {
+						$(elem).next().addClass(icon);
+						$(elem).parent().addClass(group);
+					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					console.log(textStatus + ': ' + errorThrown);
@@ -78,6 +98,8 @@ function validateEmail() {
 			});
 		}
 	}
+
+	return { hasError: hasError, elem: elem };
 }
 
 function validateEmailNoChanges() { // if input email if same with current on db
@@ -104,46 +126,57 @@ function validateEmailNoChanges() { // if input email if same with current on db
 }
 
 function validateCEmail() {
-	var result = '';
-	if(isEmpty('#c_email')) { // check if empty
-		result = '*';
-	} else if($('#c_email').val() != $('#email').val()) { // check email mismatch
-			result = 'email mismatch';
+	var elem = '#c_email';
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
+	} else if($(elem).val() != $('#email').val()) { // check email mismatch
+		hasError = true;
 	}
-	$('#c_email').next().text(result);
+	
+	return { hasError: hasError, elem: elem };
 }
 
 function validateFirstname() {
-	var result = '';
-	if(isEmpty('#firstname')) { // check if empty
-		result = '*';
-	} else if (isTooShort('#firstname', 2)) { // check if too short
-		result = 'too short';
-	} else if (hasSpecialCharsV2('#firstname')) { // check for specia chars
-		result = 'invalid';
+	var elem = '#firstname';
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
+	} else if (isTooShort(elem, 2)) { // check if too short
+		hasError = true;
+	} else if (hasSpecialCharsV2(elem)) { // check for special chars
+		hasError = true;
 	}
-	$('#firstname').next().text(result); 
+	
+	return { hasError: hasError, elem: elem };
 }
 
 function validateLastname() {
-	var result = '';
-	if(isEmpty('#lastname')) { // check if empty
-		result = '*';
-	} else if (isTooShort('#lastname', 2)) { // check if too short
-		result = 'too short';
-	} else if (hasSpecialCharsV2('#lastname')) { // check for special chars
-		result = 'invalid';
+	var elem = '#lastname';
+	var hasError = false;
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
+	} else if (isTooShort(elem, 2)) { // check if too short
+		hasError = true;
+	} else if (hasSpecialCharsV2(elem)) { // check for special chars
+		hasError = true;
 	}
-	$('#lastname').next().text(result);
+	
+	return { hasError: hasError, elem: elem };
 }
 
 function validateGender() {
-	var result = '';
-	var gender = $('input[type=radio]:checked').val(); // get checked radio button
-	if(gender == null) { // if no radio button is checked
-		result = '*';
+	var elem = '[name="gender"]';
+	var hasError = false;
+
+	if($('input[type=radio]:checked').val() == null) { // if no radio button is checked
+		hasError = true;
 	}
-	$('label[for=gender]').nextAll('span.error').text(result);
+
+	return { hasError: hasError, elem: elem };
 }
 
 function counterAbout() {
@@ -152,14 +185,28 @@ function counterAbout() {
 }
 
 function validateAll() { // all in one validation
-	validateUsername();
-	validatePassword();
-	validateCPassword();
-	validateEmail();
-	validateCEmail();
-	validateFirstname();
-	validateLastname();
-	validateGender();	
+	var validationList = [validateUsername, validatePassword, validateCPassword, 
+		validateEmail, validateCEmail, validateFirstname, validateLastname, validateGender];
+	var len = validationList.length;
+
+	for(var i = 0; i < len; i++) {
+		var validation = validationList[i]();
+
+		$(validation['elem']).next().removeClass(icon);
+		$(validation['elem']).parent().removeClass(group);
+
+		if(validation['elem'] == '[name="gender"]')
+			$(validation['elem']).parents('[class*="form-group"]').removeClass(group);
+
+		if(validation['hasError'] == true) {
+			if(validation['elem'] != '[name="gender"]') {
+				$(validation['elem']).next().addClass(icon);
+				$(validation['elem']).parent().addClass(group);
+			} else {
+				$(validation['elem']).parents('[class*="form-group"]').addClass(group);
+			}			
+		}
+	}
 }
 
 // helper functions
@@ -201,40 +248,68 @@ $(document).ready(function() {
 
 	$('#about_counter').val(255);
 
-	$('input').blur(function() { // run function depending on input blurred
+	$('input').keyup(function() { // run function depending on input blurred
+		var response = {};
+
+		$(this).next().removeClass(icon);
+		$(this).parent().removeClass(group);
+
 		switch($(this).attr('name')) {
 			case 'username':
-				validateUsername();
+				response = validateUsername();
 				break;
 			case 'password':
-				validatePassword();
+				response = validatePassword();
 				break;
 			case 'c_password':
-				validateCPassword();
+				response = validateCPassword();
 				break;
 			case 'o_password':
 				validateOPassword();
 				break;
 			case 'email':
-				validateEmail();
-				if($('#form_change_email') == 1) validateEmailNoChanges(); // if on change email page
+				response = validateEmail();
+				if($('#form_change_email') == 1)
+					validateEmailNoChanges(); // if on change email page
 				break;
 			case 'c_email':
-				validateCEmail();
+				response = validateCEmail();
 				break;
 			case 'firstname':
-				validateFirstname();
+				response = validateFirstname();
 				break;
 			case 'lastname':
-				validateLastname();
+				response = validateLastname();
 				break
 			case 'gender':
-				validateGender();
+				response = validateGender();
 				break;
 			default:
 				console.log('no command yet.');
 				break;
 		}
+
+		if(response['hasError'] == true) {
+			$(this).next().addClass(icon);
+			$(this).parent().addClass(group);
+		}
+	});
+
+
+	$('[name="gender"]').focus(function() {
+		var response = validateGender();
+		$(response['elem']).parents('[class*="form-group"]').removeClass(group);
+
+		if(response['hasError'] == true)
+			$(response['elem']).parents('[class*="form-group"]').addClass(group);
+	});
+
+	$('[name="gender"]').blur(function() {
+		var response = validateGender();
+		$(response['elem']).parents('[class*="form-group"]').removeClass(group);
+
+		if(response['hasError'] == true)
+			$(response['elem']).parents('[class*="form-group"]').addClass(group);
 	});
 
 	$('#about').keyup(function() {
@@ -242,7 +317,8 @@ $(document).ready(function() {
 	});
 
 	$('#form_signup').submit(function() {
-		if($('span.error').text() != '') return false; // restrict submit
+		validateAll();
+		if($('.form-group').hasClass(group)) return false; // restrict submit
 	});
 
 	$('#form_edit_profile').submit(function() {

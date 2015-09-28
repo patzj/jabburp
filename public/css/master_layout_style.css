@@ -5,11 +5,16 @@
 }
 
 header {
-	background: green;
+	background: #003333;
+}
+
+header h1{
+	color: #FFF;
+	font-weight: bold;
 }
 
 nav {
-	background: green;
+	background: #003333;
 }
 
 nav ul li {
@@ -17,18 +22,19 @@ nav ul li {
 	list-style: none;
 }
 
-a {
+a, a:link, a:visited, a:hover, a:active {
 	text-decoration: none;
 }
 
-nav a:link, nav a:visited {
-	color: #fff;
+#login_main {
+	margin: 10% 0 0 0;
 }
 
-nav a:hover {
-	color: #ff9;
+#signup_main {
+	margin: 5% 0 5% 0;
 }
 
-nav a:active {
-	color: #ff3;
+footer {
+	background-color: #F0F0F0;
+	text-align: center;
 }

@@ -1,40 +1,91 @@
 <?php if(!defined('BASEPATH')) die('Direct script access not allowed.'); ?>
-<section id="signup_main">
-	<form id="form_signup" action="<?= BASEPATH ?>signup/submit" method="post">
-		<label for="username">Username:</label>
-		<input type="text" id="username" name="username" maxlength="20" value="<?= @$data['username'] ?>"/>
-		<span class="error"></span><br/>
-
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password" maxlength="32"/>
-		<span class="error"></span><br/>
-
-		<label for="c_password">Confirm Password:</label>
-		<input type="password" id="c_password" name="c_password" maxlength="32"/>
-		<span class="error"></span><br/>
-
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" maxlength="64" value="<?= @$data['email'] ?>"/>
-		<span class="error"></span><br/>
-
-		<label for="c_email">Confirm Email:</label>
-		<input type="email" id="c_email" name="c_email" maxlength="64" value="<?= @$data['c_email'] ?>"/>
-		<span class="error"></span><br/>
-
-		<label for="firstname">Firstname:</label>
-		<input type="text" id="firstname" name="firstname" maxlength="32" value="<?= @$data['firstname'] ?>"/>
-		<span class="error"></span><br/>
-
-		<label for="lastname">Lastname:</label>
-		<input type="text" id="lastname" name="lastname" maxlength="32" value="<?= @$data['lastname'] ?>"/>
-		<span class="error"></span><br/>
-
-		<label for="gender">Gender:</label>
-		<input type="radio" id="male" class="gender" name="gender" value="male"/><span>Male</span>
-		<input type="radio" id="female" class="gender" name="gender" value="female"/><span>Female</span>
-		<span class="error"></span><br/>
-		<input type="submit" id="btn_signup" name="btn_signup" value="Sign Up"/>
-	</form>
-	<p class="server_error"><?= @$data['error'] ?></p>
+<section class="col-xs-0 col-sm-1 col-md-2 col-lg-4"></section>
+<section id="signup_main" class="panel panel-default">
+	<div class="panel-heading">
+		<h2 class="panel-title">Sign Up</h2>
+	</div>
+	<div class="panel-body">
+		<form id="form_signup" class="form" role="form" action="<?= BASEPATH ?>signup/submit"
+			autocomplete="off" method="post">
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="username" class="control-label">Username:</label>
+				<input type="text" id="username" class="form-control" name="username" maxlength="20" 
+					value="<?= @$data['username'] ?>"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+			<div class="clearfix"></div>
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="password" class="control-label">Password:</label>
+				<input type="password" id="password" name="password" class="form-control" maxlength="32"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="c_password" class="control-label">Confirm Password:</label>
+				<input type="password" id="c_password" name="c_password" class="form-control" maxlength="32"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="email" class="control-label">Email:</label>
+				<input type="email" id="email" name="email" maxlength="64" class="form-control" 
+					value="<?= @$data['email'] ?>"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="c_email" class="control-label">Confirm Email:</label>
+				<input type="email" id="c_email" name="c_email" maxlength="64" class="form-control" 
+					value="<?= @$data['c_email'] ?>"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="firstname" class="control-label">Firstname:</label>
+				<input type="text" id="firstname" name="firstname" maxlength="32" class="form-control" 
+					value="<?= @$data['firstname'] ?>"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group has-feedback">
+				<label for="lastname" class="control-label">Lastname:</label>
+				<input type="text" id="lastname" name="lastname" maxlength="32" class="form-control" 
+					value="<?= @$data['lastname'] ?>"/>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group"> 
+				<label for="gender" class="control-label">Gender:</label><br/>
+				<label class="radio-inline">
+					<input type="radio" id="male" name="gender" value="male"/>Male
+				</label>
+				<label class="radio-inline">
+					<input type="radio" id="female" name="gender" value="female"/>Female
+				</label>
+				<span class="form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<input type="submit" id="btn_signup" class="btn btn-default" name="btn_signup" value="Sign Up"/>
+				<a href="<?= BASEPATH ?>" class="btn btn-default">Cancel</a>
+			</div>
+		</div>
+		</form>
+	</div>
+	<div class="panel-footer">
+		<span class="text-danger"><?= @$data['error'] ?></span>
+	</div>
 </section><!-- end signup_main -->
+<section class="col-xs-0 col-sm-1 col-md-2 col-lg-4"></section>
 <script src="<?= BASEPATH ?>public/js/validate_form_input.js"></script>
