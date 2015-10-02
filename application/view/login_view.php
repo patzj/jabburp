@@ -1,22 +1,28 @@
 <?php if(!defined('BASEPATH')) die('Direct script access not allowed.'); ?>
-<section class="col-xs-0 col-sm-1 col-md-2 col-lg-4"></section>
-<section id="login_main" class="col-xs-12 col-sm-10 col-md-8 col-lg-4">
-	<form id="form_login" role="form" action="<?= BASEPATH ?>login/submit" method="post">
-		<div class="form-group">
-			<label for="username">Username:&nbsp;</label>
-			<input type="text" id="username" class="form-control" name="username" maxlength="20">
+<section class="col-sm-3 col-md-3 col-lg-4"></section>
+<section id="login_main" class="col-sm-6 col-md-6 col-lg-4">
+	<section class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title">Log In</h2>
 		</div>
-		<div class="form-group">
-			<label for="password">Password:&nbsp;</label>
-			<input type="password" id="password" class="form-control" name="password" maxlength="32">
+		<div class="panel-body">
+			<form id="form_login" class="form" role="form" action="<?= BASEPATH ?>login/submit" method="post">
+				<div class="form-group">
+					<label for="username">Username:&nbsp;</label>
+					<input type="text" id="username" class="form-control" name="username" maxlength="20">
+				</div>
+				<div class="form-group">
+					<label for="password">Password:&nbsp;</label>
+					<input type="password" id="password" class="form-control" name="password" maxlength="32">
+				</div>
+				<div class="form-group pull-right">
+					<input type="submit" id="btn_login" class='btn btn-default' name="btn_login" value="Log In">&nbsp;<span>or</span>&nbsp;
+					<a href="<?= BASEPATH ?>signup" id="link_signup" class='btn btn-default'>Sign Up</a>
+				</div>
+			</form>
 		</div>
-		<div class="form-group pull-right">
-			<input type="submit" id="btn_login" class='btn' name="btn_login" value="Log In">&nbsp;<span>or</span>&nbsp;
-			<a href="<?= BASEPATH ?>signup" id="link_signup">Sign Up</a>
+		<div class="panel-footer">
+			<span class="text-danger"><?= @$data['error'] ?></span>
 		</div>
-	</form>
-	<div class="clearfix"></div>
-	<span class="server_error text-danger col-xs-12 col-sm-12 col-md-12 col-lg-12" 
-		style="text-align:center;"><?= @$data['error'] ?></span>
+	</section><!-- end panel -->
 </section><!-- end login_main -->
-<section class="col-xs-0 col-sm-1 col-md-2 col-lg-4"></section>

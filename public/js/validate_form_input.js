@@ -1,21 +1,25 @@
 "use strict";
 var basepath = 'http://localhost/jabburp/';
-var icon = "glyphicon glyphicon-remove";
-var group = "has-error";
+var icon = 'glyphicon glyphicon-remove';
+var group = 'has-error';
 
 // validation functions
 function validateUsername() { // var assignment not working on callback.. I wonder why
 	var elem = '#username';
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else { // username is not empty but...
 		if(isTooShort(elem, 4)) { // check if too short
 			hasError = true;
+			popoverTitle = 'too short';
 		} else if(isIndexNumeric(elem, 0) || // check first char if numeric
 			hasSpecialChars(elem) || hasWhiteSpace(elem)) { // or if contains special chars and spaces
 			hasError = true;
+			popoverTitle = 'invalid';
 		} else {
 			$.ajax({
 				url: basepath + 'signup/validate',
@@ -23,7 +27,12 @@ function validateUsername() { // var assignment not working on callback.. I wond
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
 					if(response == 'not available') {
-						$(elem).next().addClass(icon);
+						$(elem).attr('data-content', response); // set data content for popover
+						$(elem).focus(function() {
+							$(this).popover(); // set input w/ popover
+						});
+
+						$(elem).siblings('[class*="form-control-feedback"]').addClass(icon);
 						$(elem).parent().addClass(group);
 					}
 				},
@@ -34,35 +43,42 @@ function validateUsername() { // var assignment not working on callback.. I wond
 		}
 	}
 
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validatePassword() {
 	var elem = '#password';
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else if(isTooShort(elem, 6)) { // check if too short
 		hasError = true;
+		popoverTitle = 'too short';
 	} else if(hasWhiteSpace(elem)) { // check for spaces
 		hasError = true;
+		popoverTitle = 'invalid';
 	}
 
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateCPassword() {
 	var elem = '#c_password';
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else if($(elem).val() != $('#password').val()) { // check password mismatch
 		hasError = true;
+		popoverTitle = 'password mismatch';
 	}
 	
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateOPassword() {
@@ -74,13 +90,16 @@ function validateOPassword() {
 function validateEmail() {
 	var elem = "#email";
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else { // email is not empty but...
 		var validEmail = /\S+@\S+\.\S+/g.test($(elem).val()); // temp checker just to patch things up
 		if(!validEmail || hasWhiteSpace(elem)) { // check...
 			hasError = true;
+			popoverTitle = 'invalid';
 		} else {
 			$.ajax({
 				url: basepath + 'signup/validate',
@@ -88,7 +107,12 @@ function validateEmail() {
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
 					if(response == 'not available') {
-						$(elem).next().addClass(icon);
+						$(elem).attr('data-content', response); // set data content for popover
+						$(elem).focus(function() {
+							$(this).popover(); // set input w/ popover
+						});
+
+						$(elem).siblings('[class="form-control-feedback"]').addClass(icon);
 						$(elem).parent().addClass(group);
 					}
 				},
@@ -99,7 +123,7 @@ function validateEmail() {
 		}
 	}
 
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateEmailNoChanges() { // if input email if same with current on db
@@ -128,55 +152,69 @@ function validateEmailNoChanges() { // if input email if same with current on db
 function validateCEmail() {
 	var elem = '#c_email';
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else if($(elem).val() != $('#email').val()) { // check email mismatch
 		hasError = true;
+		popoverTitle = 'email mismatch';
 	}
 	
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateFirstname() {
 	var elem = '#firstname';
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else if (isTooShort(elem, 2)) { // check if too short
 		hasError = true;
+		popoverTitle = 'too short';
 	} else if (hasSpecialCharsV2(elem)) { // check for special chars
 		hasError = true;
+		popoverTitle = 'invalid';
 	}
 	
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateLastname() {
 	var elem = '#lastname';
 	var hasError = false;
+	var popoverTitle = '';
 
 	if(isEmpty(elem)) { // check if empty
 		hasError = true;
+		popoverTitle = 'required';
 	} else if (isTooShort(elem, 2)) { // check if too short
 		hasError = true;
+		popoverTitle = 'too short';
 	} else if (hasSpecialCharsV2(elem)) { // check for special chars
 		hasError = true;
+		popoverTitle = 'invalid';
 	}
 	
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateGender() {
 	var elem = '[name="gender"]';
 	var hasError = false;
+	var popoverTitle = '';
 
-	if($('input[type=radio]:checked').val() == null) { // if no radio button is checked
+	if($('input#male:checked').val() == null && 
+		$('input#female:checked').val() == null) { // if no radio button is checked
 		hasError = true;
+		popoverTitle = 'required';
 	}
 
-	return { hasError: hasError, elem: elem };
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function counterAbout() {
@@ -186,23 +224,23 @@ function counterAbout() {
 
 function validateAll() { // all in one validation
 	var validationList = [validateUsername, validatePassword, validateCPassword, 
-		validateEmail, validateCEmail, validateFirstname, validateLastname, validateGender];
+		validateEmail, validateCEmail, validateFirstname, validateLastname, validateGender]; // validation list
 	var len = validationList.length;
 
-	for(var i = 0; i < len; i++) {
+	for(var i = 0; i < len; i++) { // test every validation on list
 		var validation = validationList[i]();
 
 		$(validation['elem']).next().removeClass(icon);
-		$(validation['elem']).parent().removeClass(group);
+		$(validation['elem']).parent().removeClass(group); // remove initial feedback and errors
 
-		if(validation['elem'] == '[name="gender"]')
+		if(validation['elem'] == '[name="gender"]') // remove feedback on radio btn
 			$(validation['elem']).parents('[class*="form-group"]').removeClass(group);
 
-		if(validation['hasError'] == true) {
+		if(validation['hasError'] == true) { // add feedback and errors
 			if(validation['elem'] != '[name="gender"]') {
 				$(validation['elem']).next().addClass(icon);
 				$(validation['elem']).parent().addClass(group);
-			} else {
+			} else { // add feedback on radio btn
 				$(validation['elem']).parents('[class*="form-group"]').addClass(group);
 			}			
 		}
@@ -246,15 +284,15 @@ $(document).ready(function() {
 		global: false
 	});
 
-	$('#about_counter').val(255);
+	$('#about_counter').val(255); // char count indicator
 
-	$('input').keyup(function() { // run function depending on input blurred
+	$('[data-toggle="popover"]').blur(function() { // run function depending on input blurred
 		var response = {};
 
-		$(this).next().removeClass(icon);
-		$(this).parent().removeClass(group);
+		$(this).siblings('[class*="form-control-feedback"]').removeClass(icon);
+		$(this).parent().removeClass(group); // remove any initial error feedback and icon
 
-		switch($(this).attr('name')) {
+		switch($(this).attr('name')) { // check every of focused input
 			case 'username':
 				response = validateUsername();
 				break;
@@ -280,36 +318,35 @@ $(document).ready(function() {
 				break;
 			case 'lastname':
 				response = validateLastname();
-				break
-			case 'gender':
-				response = validateGender();
 				break;
 			default:
-				console.log('no command yet.');
+				return;
 				break;
 		}
 
-		if(response['hasError'] == true) {
-			$(this).next().addClass(icon);
+		$(this).attr('data-content', response['popoverTitle']); // set data content for popover
+		if(response['hasError'] == true) { // set feedback and icon on error
+			$(this).siblings('[class*="form-control-feedback"]').addClass(icon);
 			$(this).parent().addClass(group);
 		}
 	});
 
-
-	$('[name="gender"]').focus(function() {
-		var response = validateGender();
-		$(response['elem']).parents('[class*="form-group"]').removeClass(group);
-
-		if(response['hasError'] == true)
-			$(response['elem']).parents('[class*="form-group"]').addClass(group);
+	$('[data-toggle="popover"]').focus(function() { // set input w/ popover
+		$(this).siblings('[class*="form-control-feedback"]').removeClass(icon);
+		$(this).parent().removeClass(group);
+		$(this).popover();
 	});
 
-	$('[name="gender"]').blur(function() {
+	$('[name="gender"]').blur(function() { // check error on gender radio btn
 		var response = validateGender();
-		$(response['elem']).parents('[class*="form-group"]').removeClass(group);
+		$(this).parents('[class*="form-group"]').removeClass(group); // remove initial feedback
 
-		if(response['hasError'] == true)
-			$(response['elem']).parents('[class*="form-group"]').addClass(group);
+		if(response['hasError'] == true) // set feedback on error
+			$(this).parents('[class*="form-group"]').addClass(group);
+	});
+
+	$('[name="gender"]').focus(function() { // remove feedback on error
+		$(this).parents('[class*="form-group"]').removeClass(group);
 	});
 
 	$('#about').keyup(function() {
@@ -317,7 +354,7 @@ $(document).ready(function() {
 	});
 
 	$('#form_signup').submit(function() {
-		validateAll();
+		validateAll(); // validate all input
 		if($('.form-group').hasClass(group)) return false; // restrict submit
 	});
 

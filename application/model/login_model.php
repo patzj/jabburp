@@ -12,16 +12,18 @@ class Login_model extends Model {
 		$stmt->execute(); // execute query
 		$stmt->store_result(); // store result; to be fetched
 
+		$data = false;
 		if($stmt->num_rows == 1) { // check for hit
 			$stmt->bind_result($uid, $username); // bind stored data to variables
 			$stmt->fetch(); // fetch the stored data
 			$stmt->free_result(); // free stored results
-			$stmt->close();
+			$stmt->close(); // close
+
 			$stmt = $this->conn->prepare("UPDATE login_status SET status = 'active' 
 				WHERE uid = ?");
 			$stmt->bind_param('i', $uid);
+
 			if($stmt->execute()) {
-			
 				$data = [
 					'uid' => $uid,
 					'username' => $username
@@ -31,7 +33,7 @@ class Login_model extends Model {
 
 		$stmt->close(); // close prepared statement
 		
-		return $data; // return data; either null/false or assoc array
+		return $data; // return data; either false or assoc array
 	}
 
 	function set_login_status($data) {

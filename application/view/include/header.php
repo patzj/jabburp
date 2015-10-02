@@ -17,6 +17,13 @@ session_start();
 	<script src="<?= BASEPATH ?>public/js/jquery-1.11.3.min.js"></script>
 	<script src="<?= BASEPATH ?>public/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 	<script src="<?= BASEPATH ?>public/js/login_status_controller.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.panel').css({'border': 'none'});
+			$('.panel-heading').css({'background': '#FFF'});
+			$('.panel-footer').css({'background': '#FFF'});
+		});
+	</script>
 </head>
 <body>
 <header>
