@@ -18,10 +18,29 @@ session_start();
 	<script src="<?= BASEPATH ?>public/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 	<script src="<?= BASEPATH ?>public/js/login_status_controller.js"></script>
 	<script>
+		var pagePath;
+
 		$(document).ready(function() {
 			$('.panel').css({'border': 'none'});
 			$('.panel-heading').css({'background': '#FFF'});
 			$('.panel-footer').css({'background': '#FFF'});
+
+			pagePath = location.pathname;
+
+			switch(true) {
+				case /\/jabburp\/edit/i.test(pagePath):
+				case /\/jabburp\/profile\/view\/\S+/i.test(pagePath):
+					$('nav li').eq(1).addClass('active');
+					break;
+				case /\/jabburp\/search/i.test(pagePath):
+					$('nav li').eq(2).addClass('active');
+					break;
+				case /\/jabburp/i.test(pagePath):
+					$('nav li').eq(0).addClass('active');
+					break;
+				default:
+					break;
+			}
 		});
 	</script>
 </head>
@@ -32,16 +51,27 @@ session_start();
 	</section><!-- end container -->
 </header><!-- end header -->
 
-<nav>
+<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="80"
+	style="border: none; border-radius: 0">
 	<section class="container">
-		<ul>
-			<li>&nbsp;</li>
-			<?php if(isset($_SESSION['username'])): ?>
-			<li><a href="<?= BASEPATH ?>">Home</a></li>
-			<li><a href="<?= BASEPATH ?>profile/view/<?= @$_SESSION['username'] ?>">Profile</a><li>
-			<li><a href="<?= BASEPATH ?>search">Search</a></li>
-			<?php endif; ?>
-		</ul>
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse" id="menu">
+			<ul class="nav navbar-nav navbar-right">
+				<?php if(isset($_SESSION['username'])): ?>
+				<li><a href="<?= BASEPATH ?>"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+				<li><a href="<?= BASEPATH ?>profile/view/<?= @$_SESSION['username'] ?>">
+					<span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a>
+				<li><a href="<?= BASEPATH ?>search"><span class="glyphicon glyphicon-search">
+					</span>&nbsp;Search</a></li>
+				<?php endif; ?>
+			</ul>
+		</div>
 	</section><!-- end container -->
 </nav><!-- end nav -->
 

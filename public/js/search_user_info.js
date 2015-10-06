@@ -4,7 +4,7 @@ var url = basepath + 'search/user'; // destination url for ajax/post
 
 function searchUser(search_key) {
 	if(search_key == '') { 
-		$('#search_output').empty();
+		$('#search_output').children().empty();
 		return false;
 	} // no ajax will fire
 
@@ -14,16 +14,16 @@ function searchUser(search_key) {
 		success: function(data) {
 			var response = eval('(' + data + ')');
 			if(response.length > 0) {
-				$('#search_output').empty(); // clear prev results
+				$('#search_output').children().empty(); // clear prev results
 				for(var i in response) { // loop on response elements
-					$('#search_output').append('<p class="result" <img src="" alt="avatar"/>&nbsp;' +
+					$('#search_output').children().append('<tr><td>' +
 						'<a href="http://localhost/jabburp/profile/view/' + response[i].username + 
-						'">' + response[i].username + '</a>&nbsp;' + response[i].name + 
-						'<p>'); // create an interface for results
+						'">' + response[i].username + '</a></td><td>' + response[i].name + 
+						'</td><tr>'); // create an interface for results
 				}
 			} else {
-				$('#search_output').empty(); // clear prev results
-				$('#search_output').append('<p class="result">No results found.</p>') // no results found
+				$('#search_output').children().empty(); // clear prev results
+				$('#search_output').children().append('<tr><td>No results found.</td></tr>');
 			}
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {

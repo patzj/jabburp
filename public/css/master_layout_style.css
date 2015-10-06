@@ -4,8 +4,14 @@
 	box-sizing: border-box;
 }
 
+body {
+	padding: 0 0 50px 0;
+}
+
 header {
 	background: #003333;
+	height: 80px;
+	width: 100%;
 }
 
 header h1{
@@ -14,7 +20,9 @@ header h1{
 }
 
 nav {
-	background: #003333;
+	top: 0;
+	width: 100%;
+	z-index: 9999;
 }
 
 nav ul li {
@@ -26,12 +34,8 @@ a, a:link, a:visited, a:hover, a:active {
 	text-decoration: none;
 }
 
-#login_main {
-	margin: 10% 0 0 0;
-}
-
-#signup_main {
-	margin: 5% 0 5% 0;
+main {
+	margin: 5% 0 0 0;
 }
 
 .panel-heading {
@@ -39,6 +43,6 @@ a, a:link, a:visited, a:hover, a:active {
 }
 
 footer {
-	background-color: #F0F0F0;
+	width: 100%;
 	text-align: center;
 }
