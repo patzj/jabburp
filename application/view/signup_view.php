@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				<div class="form-group"> 
+				<div class="form-group has-feedback"> 
 					<label for="gender" class="control-label">Gender:</label><br/>
 					<label class="radio-inline">
 						<input type="radio" id="male" name="gender" value="male"/>Male
