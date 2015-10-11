@@ -17,18 +17,7 @@ class Edit extends Controller {
 	function validate() {
 		if(empty($_POST)) die('Direct script access not allowed');
 
-		$array_key = key($_POST);
-		switch($array_key) {
-			case 'email':
-				self::check_availability('email', $_POST['email']);
-				break;
-			case 'password':
-				self::check_availability('password', $_POST['password']);
-				break;
-			default:
-				json_encode('');
-				break;
-		}
+		self::check_availability('email', $_POST['email']);
 	}
 
 	private function check_availability($column, $key) {
@@ -37,7 +26,7 @@ class Edit extends Controller {
 			'key' => $key
 		];
 		$this->model = $this->load->model('Edit_model');
-		$result = $this->model->validate($_SESSION['uid'], $data);
+		$result = $this->model->validate_email($_SESSION['uid'], $data);
 		echo json_encode($result);
 		unset($data);
 		unset($this->model);

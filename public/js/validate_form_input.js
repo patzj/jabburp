@@ -27,10 +27,10 @@ function validateUsername() { // var assignment not working on callback.. I wond
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
 					if(response == 'not available') {
+						$(elem).siblings('[class*="form-control-feedback"]').removeClass(icon);
+						$(elem).parent().removeClass(group);
+
 						$(elem).attr('data-content', response); // set data content for popover
-						$(elem).focus(function() {
-							$(this).popover(); // set input w/ popover
-						});
 
 						$(elem).siblings('[class*="form-control-feedback"]').addClass(icon);
 						$(elem).parent().addClass(group);
@@ -82,9 +82,16 @@ function validateCPassword() {
 }
 
 function validateOPassword() {
-	var result = '';
-	if(isEmpty('#o_password')) result = '*';
-	$('#o_password').next().text(result);
+	var elem = '#o_password';
+	var hasError = false;
+	var popoverTitle = '';
+
+	if(isEmpty(elem)) { // check if empty
+		hasError = true;
+		popoverTitle = 'required';
+	}
+
+	return { hasError: hasError, elem: elem, popoverTitle: popoverTitle };
 }
 
 function validateEmail() {
@@ -106,13 +113,13 @@ function validateEmail() {
 				data: { email: $(elem).val() },
 				success: function(data) {
 					var response = eval('(' + data + ')'); // decode callback data
-					if(response == 'not available') {
-						$(elem).attr('data-content', response); // set data content for popover
-						$(elem).focus(function() {
-							$(this).popover(); // set input w/ popover
-						});
+					if(response != '') {
+						$(elem).siblings('[class*="form-control-feedback"]').removeClass(icon);
+						$(elem).parent().removeClass(group);
 
-						$(elem).siblings('[class="form-control-feedback"]').addClass(icon);
+						$(elem).attr('data-content', response); // set data content for popover
+
+						$(elem).siblings('[class*="form-control-feedback"]').addClass(icon);
 						$(elem).parent().addClass(group);
 					}
 				},
@@ -127,26 +134,30 @@ function validateEmail() {
 }
 
 function validateEmailNoChanges() { // if input email if same with current on db
-	// $('#email').next().text('');
-	if(isEmpty('#email')) {
-		$('#email').next().text('*');
-	} else {
-		var validEmail = /\S+@\S+\.\S+/g.test($('#email').val()); // temp checker just to patch things up
-		if(!validEmail || hasWhiteSpace('#email')) {
-			$('#email').next().text('invalid');
-		} else {
-			$.ajax({
-				url: basepath + 'edit/validate',
-				data: { email: $('#email').val() },
-				success: function(data) {
-					var response = eval('(' + data + ')');
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log(textStatus + ': ' + errorThrown);
-				}
-			});
+	var elem = '#email';
+
+	$(elem).next().removeClass(icon);
+	$(elem).parent().removeClass(group);
+
+	$.ajax({
+		url: basepath + 'edit/validate',
+		data: { email: $(elem).val() },
+		success: function(data) {
+			var response = eval('(' + data + ')');
+			if(response != '') {
+				$(elem).siblings('[class*="form-control-feedback"]').removeClass(icon);
+				$(elem).parent().removeClass(group);
+
+				$(elem).attr('data-content', response);
+
+				$(elem).siblings('[class*="form-control-feedback"]').addClass(icon);
+				$(elem).parent().addClass(group);
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + ': ' + errorThrown);
 		}
-	}
+	});
 }
 
 function validateCEmail() {
@@ -233,6 +244,8 @@ function validateAll() { // all in one validation
 		$(validation['elem']).next().removeClass(icon);
 		$(validation['elem']).parent().removeClass(group); // remove initial feedback and errors
 
+		$(validation['elem']).attr('data-content', validation['popoverTitle']);
+
 		if(validation['elem'] == '[name="gender"]') // remove feedback on radio btn
 			$(validation['elem']).parents('[class*="form-group"]').removeClass(group);
 
@@ -240,9 +253,48 @@ function validateAll() { // all in one validation
 			if(validation['elem'] != '[name="gender"]') {
 				$(validation['elem']).next().addClass(icon);
 				$(validation['elem']).parent().addClass(group);
+				$(validation['elem']).popover();
 			} else { // add feedback on radio btn
 				$(validation['elem']).parents('[class*="form-group"]').addClass(group);
 			}			
+		}
+	}
+}
+
+function validateChangePassword() { // on submit change password validation
+	var validationList = [validateOPassword, validatePassword, validateCPassword];
+	var len = validationList.length;
+
+	for(var i = 0; i < len; i++) {
+		var validation = validationList[i]();
+
+		$(validation['elem']).next().removeClass(icon);
+		$(validation['elem']).parent().removeClass(group);
+
+		$(validation['elem']).attr('data-content', validation['popoverTitle']);
+		if(validation['hasError'] == true) { // add feedback and errors
+			$(validation['elem']).next().addClass(icon);
+			$(validation['elem']).parent().addClass(group);
+			$(validation['elem']).popover();
+		}
+	}
+}
+
+function validateChangeEmail() {
+	var validationList = [validateEmail, validateCEmail];
+	var len = validationList.length;
+
+	for(var i = 0; i < len; i++) {
+		var validation = validationList[i]();
+
+		$(validation['elem']).next().removeClass(icon);
+		$(validation['elem']).next().removeClass(group);
+
+		$(validation['elem']).attr('data-content', validation['popoverTitle']);
+		if(validation['hasError'] == true) {
+			$(validation['elem']).next().addClass(icon);
+			$(validation['elem']).parent().addClass(group);
+			$(validation['elem']).popover();
 		}
 	}
 }
@@ -303,11 +355,11 @@ $(document).ready(function() {
 				response = validateCPassword();
 				break;
 			case 'o_password':
-				validateOPassword();
+				response = validateOPassword();
 				break;
 			case 'email':
 				response = validateEmail();
-				if($('#form_change_email') == 1)
+				if($('#form_change_email') != 0)
 					validateEmailNoChanges(); // if on change email page
 				break;
 			case 'c_email':
@@ -366,17 +418,13 @@ $(document).ready(function() {
 	});
 
 	$('#form_change_email').submit(function() {
-		validateEmailNoChanges();
-		validateEmail();
-		validateCEmail();
-		if($('span.error').text() != '') return false; // restrict submit
+		validateChangeEmail();
+		if($('.form-group').hasClass(group)) return false; // restrict submit
 	});
 
 	$('#form_change_password').submit(function() {
-		validateOPassword();
-		validatePassword();
-		validateCPassword();
-		if($('span.error').text() != '') return false; // restrict submit
+		validateChangePassword();
+		if($('.form-group').hasClass(group)) return false; // restrict submit
 	});
 
 });

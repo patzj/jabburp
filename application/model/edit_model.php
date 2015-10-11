@@ -2,7 +2,7 @@
 
 class Edit_model extends Model {
 
-	function validate($uid, $data) {
+	function validate_email($uid, $data) {
 		extract($data);
 
 		$stmt = $this->conn->prepare("SELECT email FROM account 
