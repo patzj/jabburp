@@ -4,7 +4,7 @@ var basepath = 'http://localhost/jabburp/';
 function addRequest() {
 	$.ajax({
 		url: basepath + 'contact/add',
-		data: { data: $('h3').text() },
+		data: { data: $('h2').text() },
 		success: function(data) {
 			var response = eval('(' + data + ')'); // decode call back data
 			if(response) { // if data is true
@@ -23,7 +23,7 @@ function addRequest() {
 function removeStatus() { // this function will exec the pending stat removal
 	$.ajax({
 		url: basepath + 'contact/cancel',
-		data: { data: $('h3').text() },
+		data: { data: $('h2').text() },
 		success: function(data) {
 			var response = eval('(' + data + ')'); // decode callback data
 			if(response) { // if true
@@ -41,7 +41,7 @@ function removeStatus() { // this function will exec the pending stat removal
 function confirmRequest() { // this function will confirm the request
 	$.ajax({
 		url: basepath + 'contact/confirm',
-		data: { data: $('h3').text() },
+		data: { data: $('h2').text() },
 		success: function(data) {
 			var response = eval('(' + data + ')'); // decode callback data
 			if(response) { // if true

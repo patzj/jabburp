@@ -43,4 +43,3 @@
 	</section>
 </section>
 <script src="<?= BASEPATH ?>public/js/chat_client_controller.js"></script>
-

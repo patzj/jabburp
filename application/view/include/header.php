@@ -43,6 +43,8 @@ session_start();
 			}
 		});
 	</script>
+	<script>
+</script>
 </head>
 <body>
 <header>

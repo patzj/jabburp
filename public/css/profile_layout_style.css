@@ -1,5 +1,7 @@
 img#avatar {
-	border: 1px solid #000;
-	height: 150px;
-	width: 150px;
+	border: 1px solid #000;	
+}
+
+.borderless {
+	border: none !important;
 }
