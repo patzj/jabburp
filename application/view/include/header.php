@@ -10,6 +10,7 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<link href="<?= BASEPATH ?>public/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="<?= BASEPATH ?>public/css/master_layout_style.css" rel="stylesheet" type="text/css"/>
+	<link href="<?= BASEPATH ?>public/css/home_layout_style.css" rel="stylesheet" type="text/css"/>
 	<link href="<?= BASEPATH ?>public/css/profile_layout_style.css" rel="stylesheet" type="text/css"/>
 	<!--[if lt IE 9]>
 		<script src="<?= BASEPATH ?>public/js/html5shiv.min.js"></script>

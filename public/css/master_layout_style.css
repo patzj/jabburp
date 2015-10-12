@@ -46,3 +46,11 @@ footer {
 	width: 100%;
 	text-align: center;
 }
+
+.borderless {
+	border: none !important;
+}
+
+textarea {
+	resize: none;
+}

@@ -37,7 +37,7 @@
 				<div class="form-group has-feedback">
 					<label for="about" class="control-label">About:</label>
 					<textarea id="about" name="about"
-					class="form-control" rows="5" maxlength="255"><?= @$data['about'] ?></textarea>
+						class="form-control" rows="5" maxlength="255"><?= @$data['about'] ?></textarea>
 					<div class="pull-right">
 					<small>characters left:
 						<input type="text" id="about_counter" class="form-control input-sm" size="1" 

@@ -10,7 +10,7 @@ function displayChat(other) { // other user param
 			var len = response.length;
 			var last_msg_id = 0;
 			$('#chat_output').empty(); // empty output; other user transition
-			$('#chat_space').children('h4').text(other);
+			$('#chat_space').find('h4').text(other);
 			if(len > 0) { // check if response from ajax is not blank
 				for(var i in response) { // loop on response
 					$('#chat_output').append('<p>[' + response[i]['date_time'] + ']' + 
@@ -76,24 +76,18 @@ $(document).ready(function() {
 		async: true,
 		cache: false,
 		global: false
-		// beforeSend: function(jqXHR) {
-		// 	$('a').click(function() {
-		// 		jqXHR.abort();
-		// 	});
-		// }
 	});
 
-	$('#contact_list a').click(function() { // if one on contact list is clicked/selected
+	$('.contact').click(function() { // if one on contact list is clicked/selected
 		var i = $(this).index(); // get index of clicked element
-		var other = $('h4').eq(i).text(); // get text/content of clicked element
-		var last_msg_id = $('#chat_output').children('h4').text();
+		var other = $('h5').eq(i).text(); // get text/content of clicked element
 
 		displayChat(other); // call display chat method
 		return false; // prevent page from loading
 	});
 
 	$('#btn_send').click(function() {
-		var other = $('#chat_space').children('h4').text();
+		var other = $('#chat_space').find('h4').text();
 		var message = $('#txt_msg').val();
 		if(other != '' && message != '') {
 			sendMessage(other, message);

@@ -1,7 +1,3 @@
 img#avatar {
 	border: 1px solid #000;	
 }
-
-.borderless {
-	border: none !important;
-}
