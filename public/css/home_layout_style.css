@@ -1,0 +1,16 @@
+option:nth-child(2) {
+	color: green !important;
+}
+
+option:nth-child(3) {
+	color: orange !important;
+}
+
+option:nth-child(4) {
+	color: red !important;
+}
+
+option:nth-child(5) {
+	color: gray !important;
+}
+

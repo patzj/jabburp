@@ -17,7 +17,7 @@
 						<option value="active">active</option>
 						<option value="away">away</option>
 						<option value="busy">busy</option>
-						<option value="offline">appear offline</option>
+						<option value="offline">offline</option>
 					</select>
 				</article>
 			</article>
@@ -62,3 +62,36 @@
 	</section>
 </section>
 <script src="<?= BASEPATH ?>public/js/chat_client_controller.js"></script>
+<script defer="true">
+	$(document).ready(function() {
+		function setColor(color) {
+			$('select').css('color', color);
+		}
+
+		function setStatusColor() {
+			var status = $('option:checked').val();
+
+			switch(status) {
+				case 'active':
+					setColor('green');
+					break;
+				case 'away':
+					setColor('orange');
+					break;
+				case 'busy':
+					setColor('red');
+					break;
+				case 'offline':
+				default:
+					setColor('gray');
+					break;
+			}
+		}
+
+		$('select').on('change', function() {
+			setStatusColor();
+		});
+
+		setTimeout(setStatusColor, 250);
+	});
+</script>
