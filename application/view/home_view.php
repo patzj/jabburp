@@ -22,10 +22,11 @@
 				</article>
 			</article>
 		</section>
-		<section id="contact_list" class="panel panel-default">
+		<section class="panel panel-default">
 			<article class="panel-heading">
 				<h2 class="panel-title">Contacts</h2>
 			</article>
+			<article id="contact_list">
 				<table class="table table-hover">
 				<?php foreach ($contact_list as $contact): ?>
 					<a href="">
@@ -45,53 +46,39 @@
 					</a>
 				<?php endforeach; ?>
 				</table>
+			</article>
 		</section>
 	</aside>
-	<section id="chat_space" class="panel panel-default col-md-8">
-		<article class="panel-heading">
-			<h4 class="panel-title">&nbsp;</h4>
-		</article>
-		<article id="chat_output" class="panel-body">
-		</article>
-		<article id="chat_control" class="panel-footer navbar-fixed-bottom">
-			<form id="form_chat" class="form" role="form" action="" method="post">
-				<textarea id="txt_msg" class="form-control" max-length="255"></textarea>
-				<button id="btn_send" class="btn btn-default">Send</button>
+	<section id="chat_space" class="col-md-8">
+		<section class="panel panel-default">
+			<article class="panel-heading">
+				<h4 class="panel-title">&nbsp;</h4>
+			</article>
+			<article id="chat_output" class="panel-body">
+			</article>
+		</section>
+		<section id="chat_control" class="row col-xs-12">
+			<form id="form_chat" class="form-horizontal" role="form" action="" method="post">
+				<span class="col-xs-8 col-sm-9 col-md-10">
+				<input type="text" id="txt_msg" class="form-control" max-length="255">
+				</span>
+				<span class="col-xs-4 col-sm-3 col-md-2">
+				<button id="btn_send" class="btn btn-default btn-block">Send</button>
+				</span>
 			</form>
-		</article>
+		</section>
 	</section>
 </section>
 <script src="<?= BASEPATH ?>public/js/chat_client_controller.js"></script>
 <script defer="true">
 	$(document).ready(function() {
-		function setColor(color) {
-			$('select').css('color', color);
-		}
-
-		function setStatusColor() {
-			var status = $('option:checked').val();
-
-			switch(status) {
-				case 'active':
-					setColor('green');
-					break;
-				case 'away':
-					setColor('orange');
-					break;
-				case 'busy':
-					setColor('red');
-					break;
-				case 'offline':
-				default:
-					setColor('gray');
-					break;
-			}
-		}
-
-		$('select').on('change', function() {
-			setStatusColor();
+		$('#chat_output').css({
+			'min-height': (screen.height / 2) + 'px',
+			'max-height': (screen.height / 2) + 'px'
 		});
 
-		setTimeout(setStatusColor, 250);
+		$('#contact_list').css({
+			'max-height': (screen.height / 3) + 'px'
+		});
 	});
 </script>

@@ -38,13 +38,18 @@ main {
 	margin: 5% 0 0 0;
 }
 
-.panel-heading {
-	background: #003333;
+.panel {
+	border: none !important;
+}
+
+.panel-heading, .panel-footer {
+	background: #FFF !important;
 }
 
 footer {
 	width: 100%;
 	text-align: center;
+	display: none;
 }
 
 .borderless {

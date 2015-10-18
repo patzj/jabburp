@@ -22,10 +22,6 @@ session_start();
 		var pagePath;
 
 		$(document).ready(function() {
-			$('.panel').css({'border': 'none'});
-			$('.panel-heading').css({'background': '#FFF'});
-			$('.panel-footer').css({'background': '#FFF'});
-
 			pagePath = location.pathname;
 
 			switch(true) {

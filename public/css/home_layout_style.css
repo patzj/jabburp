@@ -1,3 +1,4 @@
+/*
 option:nth-child(2) {
 	color: green !important;
 }
@@ -13,4 +14,35 @@ option:nth-child(4) {
 option:nth-child(5) {
 	color: gray !important;
 }
+*/
 
+#contact_list {
+	overflow-y: scroll;
+}
+
+#chat_output {
+	overflow-y: scroll;
+}
+
+#chat_control {
+	position: absolute;
+}
+
+#txt_msg {
+	display: inline !important;
+}
+
+#btn_send {
+	display: inline !important;
+}
+
+.well {
+	margin: 5px 0 5px 0;
+	padding: 10px !important;
+	background: none !important;
+}
+
+.site-color {
+	background: #003333 !important;
+	color: #FFF !important;
+}

@@ -80,7 +80,7 @@ class Chat extends Controller {
 	}
 
 	function recent() {
-		set_time_limit(20);
+		//set_time_limit(20);
 		extract($_POST);
 
 		$current = $_SESSION['uid'];
@@ -118,7 +118,7 @@ class Chat extends Controller {
 		$result = $this->model->new_message($data);
 
 		if($result) echo json_encode($result);
-		else echo json_encode('erro');
+		else echo json_encode('error');
 
 		unset($result);
 		unset($this->model);
