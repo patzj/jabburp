@@ -95,6 +95,11 @@ function getNew(other, last_msg_id) {
 	});
 }
 
+function displayChatBox() {
+	$('#chat_space').removeClass('hidden-xs hidden-sm');
+	$('aside').addClass('hidden-xs hidden-sm');
+}
+
 // main method
 $(document).ready(function() {
 
@@ -114,6 +119,7 @@ $(document).ready(function() {
 			xhr.shift();
 		} // abort current chat ajax request
 
+		displayChatBox();
 		displayChat(other); // call display chat method
 
 		return false; // prevent page from loading
@@ -125,5 +131,11 @@ $(document).ready(function() {
 		if(other != '' && message != '') {
 			sendMessage(other, message);
 		} return false;
+	});
+
+	$('#close_chat').click(function() {
+		$('#chat_space').addClass('hidden-xs hidden-sm');
+		$('aside').removeClass('hidden-xs hidden-sm');
+		return false;
 	});
 });

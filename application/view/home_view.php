@@ -4,13 +4,15 @@
 		<section id="user" class="panel panel-default">
 			<?php extract($data); ?>
 			<article class="panel-heading">
-				<h2 class="panel-title"><?= $_SESSION['username'] ?></h2>
+				<h2 class="panel-title"><?= $_SESSION['username'] ?>&nbsp;
+					<a href="#" class="visible-xs"><span class="caret"></span></a>
+				</h2>
 			</article>
 			<article class="panel-body">
-				<figure class="col-md-6">
+				<figure class="col-xs-6">
 					<img src="" style="width: 75px; height: 75px"/>
 				</figure>
-				<article class="col-md-6">
+				<article class="col-xs-6">
 					<small><?= $name ?></small>
 					<select class="form-control">
 						<option disabled></option>
@@ -49,12 +51,14 @@
 			</article>
 		</section>
 	</aside>
-	<section id="chat_space" class="col-md-8">
+	<section id="chat_space" class="col-md-8 hidden-xs hidden-sm">
+		<a href="#" id="close_chat" class="close visible-xs visible-sm">&times;</a>
 		<section class="panel panel-default">
 			<article class="panel-heading">
 				<h4 class="panel-title">&nbsp;</h4>
 			</article>
 			<article id="chat_output" class="panel-body">
+				<article class="well">Click a contact and jabber up!</article>
 			</article>
 		</section>
 		<section id="chat_control" class="row col-xs-12">
