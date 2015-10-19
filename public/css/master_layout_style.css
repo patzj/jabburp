@@ -38,6 +38,10 @@ main {
 	margin: 5% 0 0 0;
 }
 
+img {
+	background: #003333;
+}
+
 .panel {
 	border: none !important;
 }

@@ -105,13 +105,31 @@ class Login_model extends Model {
 		$time_diff = (mktime() - strtotime($last_user_activity)); // get diff bet. now and last user activity
 
 		$result = false; // inital result value
-		if($time_diff >= 300) {
+		if($time_diff >= 299) {
 			$stmt = $this->conn->prepare("UPDATE login_status SET status = 'away' 
 				WHERE uid = ? AND status <> 'busy'"); // 2nd query for setting away status
 			$stmt->bind_param('i', $uid); // bind param
 			$result = $stmt->execute(); // execute
 			$stmt->close(); // close prepared statement
 		}
+
+		return $result;
+	}
+
+	function get_contact_status($uid) {
+		$stmt = $this->conn->prepare('SELECT status FROM login_status 
+			WHERE uid = ?');
+		$stmt->bind_param('i', $uid);
+		$stmt->execute();
+
+		$result = false;
+		if($stmt->num_rows == 1) {
+			$stmt->bind_result($result);
+			$stmt->fetch();
+		}
+
+		$stmt->free_result();
+		$stmt->close();
 
 		return $result;
 	}

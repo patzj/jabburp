@@ -40,7 +40,8 @@
 							</td>
 							<td>
 								<article>
-									<h5><?= $contact['username'] ?></h5>
+									<h5 style="display:inline;"><?= $contact['username'] ?></h5>
+									<small class="contact_status badge"></small><br/>
 									<small><?= $contact['name'] ?></small>
 								</article>
 							</td>
@@ -74,7 +75,8 @@
 	</section>
 </section>
 <script src="<?= BASEPATH ?>public/js/chat_client_controller.js"></script>
-<script defer="true">
+<script src="<?= BASEPATH ?>public/js/login_status_controller.js"></script>
+<script>
 	$(document).ready(function() {
 		$('#chat_output').css({
 			'min-height': (screen.height / 2) + 'px',

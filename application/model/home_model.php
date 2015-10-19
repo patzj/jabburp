@@ -47,4 +47,23 @@ class Home_model extends Model {
 
 		return $data;
 	}
+
+	function get_contact_status($uid) {
+		$stmt = $this->conn->prepare('SELECT status FROM login_status 
+			WHERE uid = ?');
+		$stmt->bind_param('i', $uid);
+		$stmt->execute();
+		$stmt->store_result();
+
+		$result = false;
+		if($stmt->num_rows == 1) {
+			$stmt->bind_result($result);
+			$stmt->fetch();
+		}
+
+		$stmt->free_result();
+		$stmt->close();
+
+		return $result;
+	}
 }

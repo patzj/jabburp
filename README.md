@@ -13,12 +13,12 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 - HTML5 Semantics
 - HTML Standardization
 
-#### Alpha 2.0
-- Working Chat Module
-
-#### Alpha 2.0.1
-- Log In Status Module - partial
-- From .post to .ajax jQuery transition
-
-#### Alpha 2.0.2
-- Edit User and Account Data Module
+#### Alpha 3.5
+- Working Sign Up Modules
+- Working Log In Modules
+- Working Chat Modules
+- Working Edit Modules
+- Reponsive Layout (for most devices)
+- Partially Working Status Modules
+- Good-to-Go for deployment
+- Crashes on Chrome (might be caused by contact status modules)

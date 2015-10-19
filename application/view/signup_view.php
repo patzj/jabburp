@@ -99,6 +99,4 @@
 		</div>
 	</section><!-- end panel -->
 </section><!-- end signup_main -->
-<script>
-</script>
 <script src="<?= BASEPATH ?>public/js/validate_form_input.js"></script>

@@ -18,6 +18,31 @@ class Home extends Controller {
 		unset($this->view);
 	}
 
+	function contact_status() {
+		if(empty($_POST)) die('Direct script acccess not allowed');
+
+		$username = $_POST['data'];
+		$uid = self::get_uid($username);
+		$this->model = $this->load->model('Home_model');
+		$result = $this->model->get_contact_status($uid);
+
+		if($result) {
+			echo json_encode($result);
+		} else {
+			echo json_encode('');
+		}
+
+		unset($this->model);
+	}
+
+	private function get_uid($username) {
+		$this->model = $this->load->model('Helper_model');
+		$uid = $this->model->get_uid($username);
+		unset($this->model);
+
+		return $uid;
+	}
+
 	private function user() { // get user info using uid
 		$this->model = $this->load->model('Home_model');
 		return $this->model->get_contact_details($_SESSION['uid']);

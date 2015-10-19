@@ -33,7 +33,9 @@ function displayChat(other) { // other user param
 			} else console.log('null response.'); 
 
 			$('#chat_output').scrollTop(9999);
-			setTimeout(getNew(other, last_msg_id), 1000);
+			setTimeout(function() {
+				getNew(other, last_msg_id)
+			}, 1000);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log('something went wrong.');
@@ -86,7 +88,9 @@ function getNew(other, last_msg_id) {
 					last_msg_id = response[i]['msg_id']; // wil be set to the last msg_id thru loop
 				}
 			}
-			setTimeout(getNew(other, last_msg_id), 1000);
+			setTimeout(function() {
+				getNew(other, last_msg_id)
+			}, 1000);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log(textStatus);
@@ -98,6 +102,30 @@ function getNew(other, last_msg_id) {
 function displayChatBox() {
 	$('#chat_space').removeClass('hidden-xs hidden-sm');
 	$('aside').addClass('hidden-xs hidden-sm');
+}
+
+function updateContactStatus() {
+	var contactPool = $('.contact').find('h5');
+	var contactPoolStatus = $('.contact_status');
+	var len = contactPool.length;
+
+	for(var i = 0; i < len; i++) {	
+		$.ajax({
+			url: basepath + 'home/contact_status',
+			data: { data: contactPool[i].innerHTML },
+			indexValue: i,
+			success: function(data) {
+				var response = eval('(' + data + ')');
+				if(response != '') {
+					contactPoolStatus[this.indexValue].innerHTML = response;
+					setTimeout(updateContactStatus, 60000);
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(textStatus);
+			}
+		});
+	}
 }
 
 // main method
@@ -138,4 +166,6 @@ $(document).ready(function() {
 		$('aside').removeClass('hidden-xs hidden-sm');
 		return false;
 	});
+
+	updateContactStatus();
 });

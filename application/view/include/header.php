@@ -17,7 +17,6 @@ session_start();
 	<![endif]-->
 	<script src="<?= BASEPATH ?>public/js/jquery-1.11.3.min.js"></script>
 	<script src="<?= BASEPATH ?>public/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
-	<script src="<?= BASEPATH ?>public/js/login_status_controller.js"></script>
 	<script>
 		var pagePath;
 

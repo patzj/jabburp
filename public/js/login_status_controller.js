@@ -75,7 +75,7 @@ function getLoginStatus() { // get login status of current user
 					opt = 0;
 					break;
 			}
-			var s = $('select').children().eq(opt).prop({selected: true});
+			$('select').children().eq(opt).prop({selected: true});
 			setTimeout(getLoginStatus, 300000); // will run every 5 mins
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -110,10 +110,6 @@ $(document).ready(function() {
 	});
 
 	$('a').click(function() {
-		setLastUserActivity();
-	});
-
-	$('textarea').focus(function() {
 		setLastUserActivity();
 	});
 
