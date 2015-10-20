@@ -1,6 +1,6 @@
 <?php
 
-define('BASEPATH', 'http://localhost/jabburp/');
+define('BASEPATH', 'http://192.168.1.4/jabburp/');
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
 

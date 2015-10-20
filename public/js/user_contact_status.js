@@ -1,5 +1,4 @@
 "use strict";
-var basepath = 'http://localhost/jabburp/';
 
 function addRequest() {
 	$.ajax({

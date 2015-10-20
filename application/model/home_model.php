@@ -48,22 +48,43 @@ class Home_model extends Model {
 		return $data;
 	}
 
-	function get_contact_status($uid) {
-		$stmt = $this->conn->prepare('SELECT status FROM login_status 
-			WHERE uid = ?');
-		$stmt->bind_param('i', $uid);
-		$stmt->execute();
-		$stmt->store_result();
+	function get_contact_status($data) {
+		$result = [];
+		foreach ($data as $uid) {
+			$stmt = $this->conn->prepare('SELECT status FROM login_status 
+				WHERE uid = ?');
+			$stmt->bind_param('i', $uid);
+			$stmt->execute();
+			$stmt->store_result();
 
-		$result = false;
-		if($stmt->num_rows == 1) {
-			$stmt->bind_result($result);
-			$stmt->fetch();
+			$status = false;
+			if($stmt->num_rows == 1) {
+				$stmt->bind_result($status);
+				$stmt->fetch();
+				$result[] = [$uid, $status];
+			}
+
+			$stmt->free_result();
+			$stmt->close();
 		}
 
-		$stmt->free_result();
-		$stmt->close();
-
 		return $result;
+		
+		// $stmt = $this->conn->prepare('SELECT status FROM login_status 
+		// 	WHERE uid = ?');
+		// $stmt->bind_param('i', $uid);
+		// $stmt->execute();
+		// $stmt->store_result();
+
+		// $result = false;
+		// if($stmt->num_rows == 1) {
+		// 	$stmt->bind_result($result);
+		// 	$stmt->fetch();
+		// }
+
+		// $stmt->free_result();
+		// $stmt->close();
+
+		// return $result;
 	}
 }

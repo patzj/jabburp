@@ -1,5 +1,4 @@
 "use strict";
-var basepath = "http://localhost/jabburp/";
 
 function setLastClientPing() { // ping server to flag online status
 	$.ajax({
@@ -75,7 +74,7 @@ function getLoginStatus() { // get login status of current user
 					opt = 0;
 					break;
 			}
-			$('select').children().eq(opt).prop({selected: true});
+			$('select').find('option').eq(opt).prop({selected: true});
 			setTimeout(getLoginStatus, 300000); // will run every 5 mins
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {

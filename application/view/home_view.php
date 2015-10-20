@@ -4,24 +4,30 @@
 		<section id="user" class="panel panel-default">
 			<?php extract($data); ?>
 			<article class="panel-heading">
-				<h2 class="panel-title"><?= $_SESSION['username'] ?>&nbsp;
-					<a href="#" class="visible-xs"><span class="caret"></span></a>
-				</h2>
+				<h2 class="panel-title"><?= $_SESSION['username'] ?></h2>
 			</article>
-			<article class="panel-body">
-				<figure class="col-xs-6">
-					<img src="" style="width: 75px; height: 75px"/>
-				</figure>
-				<article class="col-xs-6">
-					<small><?= $name ?></small>
-					<select class="form-control">
-						<option disabled></option>
-						<option value="active">active</option>
-						<option value="away">away</option>
-						<option value="busy">busy</option>
-						<option value="offline">offline</option>
-					</select>
-				</article>
+			<article>
+				<table class="table">
+					<tr>
+						<td>
+							<figure>
+								<img src="" style="width: 75px; height: 75px"/>
+							</figure>
+						</td>
+						<td>
+							<article>
+								<small><?= $name ?></small>
+								<select class="form-control">
+									<option disabled></option>
+									<option value="active">active</option>
+									<option value="away">away</option>
+									<option value="busy">busy</option>
+									<option value="offline">offline</option>
+								</select>
+							</article>
+						</td>
+					</tr>
+				</table>
 			</article>
 		</section>
 		<section class="panel panel-default">

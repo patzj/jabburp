@@ -1,5 +1,4 @@
 "use strict";
-var basepath = 'http://localhost/jabburp/';	
 var url = basepath + 'search/user'; // destination url for ajax/post
 
 function searchUser(search_key) {

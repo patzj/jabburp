@@ -1,5 +1,4 @@
 "use strict";
-var basepath = 'http://localhost/jabburp/';
 var icon = 'glyphicon glyphicon-remove';
 var group = 'has-error';
 

@@ -1,5 +1,4 @@
 "use strict";
-var basepath = 'http://localhost/jabburp/';
 var xhr = [];
 
 function displayChat(other) { // other user param
@@ -89,6 +88,7 @@ function getNew(other, last_msg_id) {
 				}
 			}
 			setTimeout(function() {
+				$('#chat_output').scrollTop(9999);
 				getNew(other, last_msg_id)
 			}, 1000);
 		},
@@ -104,28 +104,49 @@ function displayChatBox() {
 	$('aside').addClass('hidden-xs hidden-sm');
 }
 
+function getContactStatus() {
+	var contactPool = $('.contact').find('h5');
+	var contactPoolStatus = $('.contact_status');
+	var len = contactPool.length;
+
+	$.ajax({
+		url: basepath + 'home/contact_status',
+		data: { data: true },
+		success: function(data) {
+			var response = eval('(' + data + ')');
+			if(response != '') {
+				for(var i = 0; i < len; i++) {
+					contactPoolStatus[i].innerHTML = response[i][1];
+				}
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus);
+		}
+	});	
+}
+
 function updateContactStatus() {
 	var contactPool = $('.contact').find('h5');
 	var contactPoolStatus = $('.contact_status');
 	var len = contactPool.length;
 
-	for(var i = 0; i < len; i++) {	
-		$.ajax({
-			url: basepath + 'home/contact_status',
-			data: { data: contactPool[i].innerHTML },
-			indexValue: i,
-			success: function(data) {
-				var response = eval('(' + data + ')');
-				if(response != '') {
-					contactPoolStatus[this.indexValue].innerHTML = response;
-					setTimeout(updateContactStatus, 60000);
+	$.ajax({
+		url: basepath + 'home/update_contact_status',
+		data: { data: true },
+		success: function(data) {
+			var response = eval('(' + data + ')');
+			if(response != '') {
+				for(var i = 0; i < len; i++) {
+					contactPoolStatus[i].innerHTML = response[i][1];
 				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log(textStatus);
 			}
-		});
-	}
+			setTimeout(updateContactStatus, 1000);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus);
+		}
+	});
 }
 
 // main method
@@ -167,5 +188,6 @@ $(document).ready(function() {
 		return false;
 	});
 
+	getContactStatus();
 	updateContactStatus();
 });

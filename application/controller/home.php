@@ -18,21 +18,40 @@ class Home extends Controller {
 		unset($this->view);
 	}
 
+	function update_contact_status() {
+		if(empty($_POST)) die('Direct script acccess not allowed');
+
+		$last_contact_status = self::get_contact_status();
+		$current_contact_status = self::get_contact_status();
+
+		while($last_contact_status === $current_contact_status) { // last contact status vs current contact status
+			usleep(1000000); // 1 sec
+			$current_contact_status = self::get_contact_status();
+		}
+
+		echo json_encode($current_contact_status);
+
+		return;
+	}
+
 	function contact_status() {
 		if(empty($_POST)) die('Direct script acccess not allowed');
 
-		$username = $_POST['data'];
-		$uid = self::get_uid($username);
+		echo json_encode(self::get_contact_status());
+
+		return;
+	}
+
+	private function get_contact_status() {
+		$data = self::contact_list();
 		$this->model = $this->load->model('Home_model');
-		$result = $this->model->get_contact_status($uid);
-
-		if($result) {
-			echo json_encode($result);
-		} else {
-			echo json_encode('');
-		}
-
+		$result = $this->model->get_contact_status($data);
 		unset($this->model);
+		if($result) {
+			return $result;
+		} 
+
+		return false;
 	}
 
 	private function get_uid($username) {
