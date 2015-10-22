@@ -108,15 +108,20 @@ function getContactStatus() {
 	var contactPool = $('.contact').find('h5');
 	var contactPoolStatus = $('.contact_status');
 	var len = contactPool.length;
+	var data = [];
+
+	for(var i = 0; i < len; i++) {
+		data.push(contactPool[i].innerHTML);
+	}
 
 	$.ajax({
 		url: basepath + 'home/contact_status',
-		data: { data: true },
+		data: { data: data },
 		success: function(data) {
 			var response = eval('(' + data + ')');
 			if(response != '') {
 				for(var i = 0; i < len; i++) {
-					contactPoolStatus[i].innerHTML = response[i][1];
+					contactPoolStatus[i].innerHTML = response[i];
 				}
 			}
 		},
@@ -130,18 +135,45 @@ function updateContactStatus() {
 	var contactPool = $('.contact').find('h5');
 	var contactPoolStatus = $('.contact_status');
 	var len = contactPool.length;
+	var data = [];
+
+	for(var i = 0; i < len; i++) {
+		data.push(contactPool[i].innerHTML);
+	}
 
 	$.ajax({
 		url: basepath + 'home/update_contact_status',
-		data: { data: true },
+		data: { data: data },
 		success: function(data) {
 			var response = eval('(' + data + ')');
 			if(response != '') {
 				for(var i = 0; i < len; i++) {
-					contactPoolStatus[i].innerHTML = response[i][1];
+					contactPoolStatus[i].innerHTML = response[i];
+					console.log(response);
 				}
 			}
 			setTimeout(updateContactStatus, 1000);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus);
+		}
+	});
+}
+
+function setUnreadMessageBadge() {
+	var contactPool = $('.contact').find('h5');
+	var contactPoolStatus = $('.contact_status');
+	var len = contactPool.length;
+
+	$.ajax({
+		url: basepath + 'home/unread',
+		data: { data: true },
+		success: function(data) {
+			var response = eval('(' + data + ')');
+			if(response != '') {
+
+			}
+			setTimeout(setUnreadMessageBadge, 1000);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log(textStatus);

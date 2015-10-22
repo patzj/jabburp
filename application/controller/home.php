@@ -21,37 +21,62 @@ class Home extends Controller {
 	function update_contact_status() {
 		if(empty($_POST)) die('Direct script acccess not allowed');
 
-		$last_contact_status = self::get_contact_status();
-		$current_contact_status = self::get_contact_status();
+		$data = self::get_uid_batch($_POST['data']);
+
+		$last_contact_status = self::get_contact_status($data);
+		$current_contact_status = self::get_contact_status($data);
 
 		while($last_contact_status === $current_contact_status) { // last contact status vs current contact status
 			usleep(1000000); // 1 sec
-			$current_contact_status = self::get_contact_status();
+			$current_contact_status = self::get_contact_status($data);
 		}
 
 		echo json_encode($current_contact_status);
-
-		return;
 	}
 
 	function contact_status() {
 		if(empty($_POST)) die('Direct script acccess not allowed');
 
-		echo json_encode(self::get_contact_status());
-
-		return;
+		$data = self::get_uid_batch($_POST['data']);
+		echo json_encode(self::get_contact_status($data)); // username of contacts
 	}
 
-	private function get_contact_status() {
+	function unread() {
+		if(empty($_POST)) die('Direct script acccess not allowed');
+
+		$last_read_message = self::get_last_read_msg();
+		$max_message =	self::get_max_msg();
+
+		while($last_read_message === $max_message) {
+			usleep(1000000);
+			$max_message = self::get_max_msg();
+		}		
+	}
+
+	private function get_last_read_msg() {
 		$data = self::contact_list();
+		$this->model = $this->load->model('Home_model');
+		$result = $this->model->get_last_read_msg($data);
+		unset($this->model);
+
+		return $result;
+	}
+
+	private function get_max_msg() {
+		$data = self::contact_list();
+		$this->model = $this->load->model('Home_model');
+		$result = $this->model->get_max_msg($data);
+		unset($this->model);
+
+		return $result;
+	}
+
+	private function get_contact_status($data) {
 		$this->model = $this->load->model('Home_model');
 		$result = $this->model->get_contact_status($data);
 		unset($this->model);
-		if($result) {
-			return $result;
-		} 
-
-		return false;
+		
+		return $result;
 	}
 
 	private function get_uid($username) {
@@ -60,6 +85,16 @@ class Home extends Controller {
 		unset($this->model);
 
 		return $uid;
+	}
+
+	private function get_uid_batch($data) { 
+		$result = [];
+
+		foreach($data as $elem) {
+			$result[] = self::get_uid($elem);
+		}
+
+		return $result;
 	}
 
 	private function user() { // get user info using uid

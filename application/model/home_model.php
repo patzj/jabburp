@@ -61,30 +61,60 @@ class Home_model extends Model {
 			if($stmt->num_rows == 1) {
 				$stmt->bind_result($status);
 				$stmt->fetch();
-				$result[] = [$uid, $status];
 			}
-
+			$result[] = $status;
 			$stmt->free_result();
 			$stmt->close();
 		}
 
 		return $result;
-		
-		// $stmt = $this->conn->prepare('SELECT status FROM login_status 
-		// 	WHERE uid = ?');
-		// $stmt->bind_param('i', $uid);
-		// $stmt->execute();
-		// $stmt->store_result();
+	}
 
-		// $result = false;
-		// if($stmt->num_rows == 1) {
-		// 	$stmt->bind_result($result);
-		// 	$stmt->fetch();
-		// }
+	function get_max_msg($data) {
+		$user1 = $_SESSION['uid'];
+		$result = [];
+		foreach ($data as $user2) {
+			$stmt = $this->conn->prepare("SELECT MAX(msg_id) FROM message
+				WHERE conv_id = (SELECT conv_id FROM conversation 
+				WHERE users = CONCAT(?, ', ', ?) 
+				OR users = CONCAT(?, ', ', ?))");
+			$stmt->bind_param('iiii', $user1, $user2, $user2, $user1);
+			$stmt->execute();
+			$stmt->store_result();
 
-		// $stmt->free_result();
-		// $stmt->close();
+			$max = 0;
+			if($stmt->num_rows == 1) {
+				$stmt->bind_result($max);
+				$stmt->fetch();
+			}
+			$result[] = [$user2, $max];
+			$stmt->free_result();
+			$stmt->close();
+		}
 
-		// return $result;
+		return $result;
+	}
+
+	function get_last_read_msg($data) {
+		$user1 = $_SESSION['uid'];
+		$result = [];
+		foreach ($data as $user2) {
+			$stmt = $this->conn->prepare('SELECT last_msg_read FROM contact
+				WHERE user1 = ? AND user2 = ?');
+			$stmt->bind_param('ii', $user1, $user2);
+			$stmt->execute();
+			$stmt->store_result();
+
+			$lst_msg = 0;
+			if($stmt->num_rows == 1) {
+				$stmt->bind_result($lst_msg);
+				$stmt->fetch();
+			}
+			$result[] = [$user2, $lst_msg];
+			$stmt->free_result();
+			$stmt->close();
+		}
+
+		return $result;
 	}
 }
