@@ -83,7 +83,10 @@ function getNew(other, last_msg_id) {
 						response[i]['content'] + ' <strong>:' +
 						response[i]['username'] + '</strong></article>';
 					}
-					$('#chat_output').append(message); // display each msg response
+					if(other == response[i]['username'] && 
+						$('#user').find('h2').text() == response[i]['username']) {
+						$('#chat_output').append(message); // display each msg response
+					}
 					last_msg_id = response[i]['msg_id']; // wil be set to the last msg_id thru loop
 				}
 			}
@@ -91,6 +94,9 @@ function getNew(other, last_msg_id) {
 				$('#chat_output').scrollTop(9999);
 				getNew(other, last_msg_id)
 			}, 1000);
+		},
+		complete: function() {
+			setReadMessageIndicator(other);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log(textStatus);
@@ -149,7 +155,6 @@ function updateContactStatus() {
 			if(response != '') {
 				for(var i = 0; i < len; i++) {
 					contactPoolStatus[i].innerHTML = response[i];
-					console.log(response);
 				}
 			}
 			setTimeout(updateContactStatus, 1000);
@@ -160,20 +165,46 @@ function updateContactStatus() {
 	});
 }
 
-function setUnreadMessageBadge() {
+function setUnreadMessageIndicator() {
 	var contactPool = $('.contact').find('h5');
 	var contactPoolStatus = $('.contact_status');
 	var len = contactPool.length;
+	var data = [];
+
+	for(var i = 0; i < len; i++) {
+		data.push(contactPool[i].innerHTML);
+	}
 
 	$.ajax({
 		url: basepath + 'home/unread',
-		data: { data: true },
+		data: { data: data },
 		success: function(data) {
 			var response = eval('(' + data + ')');
 			if(response != '') {
-
+				for(var i = 0; i < len; i++) {
+					if(response[i] == true) {
+						$('.contact').eq(i).css('font-weight', 'bold');
+					}
+				}
+			console.log(response);
 			}
-			setTimeout(setUnreadMessageBadge, 1000);
+			setTimeout(setUnreadMessageIndicator, 2000);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus);
+		}
+	});
+}
+
+function setReadMessageIndicator(other) {
+	$.ajax({
+		url: basepath + 'home/read',
+		data: { data: other },
+		success: function(data) {
+			var response = eval('(' + data + ')');
+			if(response == true) {
+				console.log('read');
+			}
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log(textStatus);
@@ -202,6 +233,7 @@ $(document).ready(function() {
 
 		displayChatBox();
 		displayChat(other); // call display chat method
+		setReadMessageIndicator(other);
 
 		return false; // prevent page from loading
 	});
@@ -222,4 +254,5 @@ $(document).ready(function() {
 
 	getContactStatus();
 	updateContactStatus();
+	setUnreadMessageIndicator();
 });

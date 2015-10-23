@@ -44,17 +44,48 @@ class Home extends Controller {
 	function unread() {
 		if(empty($_POST)) die('Direct script acccess not allowed');
 
-		$last_read_message = self::get_last_read_msg();
-		$max_message =	self::get_max_msg();
+		$data = self::get_uid_batch($_POST['data']);
+		$len = 0;
+		$result = [];
+
+		$last_read_message = self::get_last_read_msg($data);
+		$max_message =	self::get_max_msg($data);
 
 		while($last_read_message === $max_message) {
 			usleep(1000000);
-			$max_message = self::get_max_msg();
-		}		
+			$max_message = self::get_max_msg($data);
+		}
+
+		$len = count($last_read_message);
+		for($i = 0; $i < $len; $i++) {
+			$response = false;
+			if($last_read_message[$i] != $max_message[$i]) {
+				$response = true;
+			}
+			$result[] = $response;
+		}
+
+		echo json_encode($result);
 	}
 
-	private function get_last_read_msg() {
-		$data = self::contact_list();
+	function read() {
+		if(empty($_POST)) die('Direct script access not allowed');
+
+		$other[] = self::get_uid($_POST['data']);
+		$max_message = self::get_max_msg($other);
+		
+		$data = [
+			'other' => $other[0],
+			'max' => $max_message[0]
+		];
+
+		$this->model = $this->load->model('Home_model');
+		$result = $this->model->set_last_read_msg($data);
+
+		echo json_encode($result);
+	}
+
+	private function get_last_read_msg($data) {
 		$this->model = $this->load->model('Home_model');
 		$result = $this->model->get_last_read_msg($data);
 		unset($this->model);
@@ -62,8 +93,7 @@ class Home extends Controller {
 		return $result;
 	}
 
-	private function get_max_msg() {
-		$data = self::contact_list();
+	private function get_max_msg($data) {
 		$this->model = $this->load->model('Home_model');
 		$result = $this->model->get_max_msg($data);
 		unset($this->model);

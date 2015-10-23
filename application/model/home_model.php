@@ -87,7 +87,7 @@ class Home_model extends Model {
 				$stmt->bind_result($max);
 				$stmt->fetch();
 			}
-			$result[] = [$user2, $max];
+			$result[] = $max;
 			$stmt->free_result();
 			$stmt->close();
 		}
@@ -110,10 +110,25 @@ class Home_model extends Model {
 				$stmt->bind_result($lst_msg);
 				$stmt->fetch();
 			}
-			$result[] = [$user2, $lst_msg];
+			$result[] = $lst_msg;
 			$stmt->free_result();
 			$stmt->close();
 		}
+
+		return $result;
+	}
+
+	function set_last_read_msg($data) {
+		$user1 = $_SESSION['uid'];
+		$user2 = $data['other'];
+		$max = $data['max'];
+
+		$stmt = $this->conn->prepare('UPDATE contact SET last_msg_read = ?
+			WHERE user1 = ? AND user2 = ?');
+		$stmt->bind_param('iii', $max, $user1, $user2);
+		$result = $stmt->execute();
+
+		$stmt->close();
 
 		return $result;
 	}
