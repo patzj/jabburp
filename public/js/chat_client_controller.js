@@ -83,14 +83,23 @@ function getNew(other, last_msg_id) {
 						response[i]['content'] + ' <strong>:' +
 						response[i]['username'] + '</strong></article>';
 					}
-					if(other == response[i]['username'] && 
-						$('#user').find('h2').text() == response[i]['username']) {
+					if(response[i]['username'] == $('#chat_space').find('h4').text() || 
+						response[i]['username'] == $('#user').find('h2').text()) {
 						$('#chat_output').append(message); // display each msg response
 					}
 					last_msg_id = response[i]['msg_id']; // wil be set to the last msg_id thru loop
 				}
 			}
 			setTimeout(function() {
+				var contactPool = $('.contact').find('h5');
+				var contactPoolLen = contactPool.length;
+
+				for(var i = 0; i < contactPoolLen; i++) {
+					if($('#chat_space').find('h4').text() == contactPool[i].innerHTML) {
+						$('.contact').eq(i).css('font-weight', 'normal');
+					}
+				}
+
 				$('#chat_output').scrollTop(9999);
 				getNew(other, last_msg_id)
 			}, 1000);
