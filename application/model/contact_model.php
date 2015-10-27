@@ -28,7 +28,7 @@ class Contact_model extends Model {
 	function add_contact_req($data) { // send contact request to profile owner
 		extract($data); // extract data
 
-		$stmt = $this->conn->prepare("INSERT INTO contact 
+		$stmt = $this->conn->prepare("INSERT INTO contact(user1, user2, status)
 			VALUES((SELECT uid FROM account WHERE username = ?), 
 			(SELECT uid FROM account WHERE username = ?), 'pending')"); // prepare query
 		$stmt->bind_param('ss', $current, $other); // bind param
@@ -64,7 +64,7 @@ class Contact_model extends Model {
 		if($stmt->execute()) { // execute; check if true
 			$stmt->close(); // close prev prepared statement
 
-			$stmt = $this->conn->prepare('INSERT INTO contact 
+			$stmt = $this->conn->prepare('INSERT INTO contact(user1, user2, status)
 				VALUES((SELECT uid FROM account WHERE username = ?), # 2nd query
 				(SELECT uid FROM account WHERE username = ?), "confirmed")'); // add another contact row for other user
 			$stmt->bind_param('ss', $current, $other); // bind param
@@ -73,5 +73,64 @@ class Contact_model extends Model {
 				return true;
 			}
 		} return false;
+	}
+
+	function get_requests($uid) {
+		$status = 'pending';
+		$stmt = $this->conn->prepare('SELECT user1 FROM contact
+			WHERE status = ? AND user2 = ?');
+		$stmt->bind_param('si', $status, $uid);
+		$stmt->execute();
+		$result = $stmt->get_result(); // get result
+
+		$data = false;
+		if($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$data[] = $row;
+			}
+		}
+
+		unset($uid);
+		unset($row);
+		$stmt->free_result();
+		$stmt->close();
+
+		foreach ($data as $elem) {
+			$stmt = $this->conn->prepare('SELECT account.username,
+				user_info.firstname, user_info.lastname
+				FROM account LEFT JOIN user_info
+				ON account.uid = user_info.uid
+				WHERE account.uid = ?');
+			$stmt->bind_param('i', $elem['user1']);
+			$stmt->execute();
+		 	$result = $stmt->get_result();
+
+		 	$requests = false;
+			if($result->num_rows > 0) {
+				while($row = $result->fetch_assoc()) {
+					$requests[] = $row;
+				}
+			}
+
+			$stmt->free_result();
+			$stmt->close();
+		}
+
+		return $requests;
+	}
+
+	function get_requests_count($uid) {
+		$status = 'pending';
+		$stmt = $this->conn->prepare('SELECT user1 FROM contact
+			WHERE status = ? AND user2 = ?');
+		$stmt->bind_param('si', $status, $uid);
+		$stmt->execute();
+		$stmt->store_result();
+
+		$count = $stmt->num_rows;
+		$stmt->free_result();
+		$stmt->close();
+
+		return $count;
 	}
 }

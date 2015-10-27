@@ -18,30 +18,7 @@ session_start();
 	<script src="<?= BASEPATH ?>public/js/jquery-1.11.3.min.js"></script>
 	<script src="<?= BASEPATH ?>public/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 	<script src="<?= BASEPATH ?>public/js/config.js"></script>
-	<script>
-		var pagePath;
-
-		$(document).ready(function() {
-			pagePath = location.pathname;
-
-			switch(true) {
-				case /\/jabburp\/edit/i.test(pagePath):
-				case /\/jabburp\/profile\/view\/\S+/i.test(pagePath):
-					$('nav li').eq(1).addClass('active');
-					break;
-				case /\/jabburp\/search/i.test(pagePath):
-					$('nav li').eq(2).addClass('active');
-					break;
-				case /\/jabburp/i.test(pagePath):
-					$('nav li').eq(0).addClass('active');
-					break;
-				default:
-					break;
-			}
-		});
-	</script>
-	<script>
-</script>
+	<script src="<?= BASEPATH ?>public/js/nav_behavior.js"></script>
 </head>
 <body>
 <header>
@@ -63,11 +40,18 @@ session_start();
 		<div class="collapse navbar-collapse" id="menu">
 			<ul class="nav navbar-nav navbar-right">
 				<?php if(isset($_SESSION['username'])): ?>
-				<li><a href="<?= BASEPATH ?>"><span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+				<li><a href="<?= BASEPATH ?>"><span class="glyphicon glyphicon-home"></span>
+					&nbsp;Home
+				</a></li>
 				<li><a href="<?= BASEPATH ?>profile/view/<?= @$_SESSION['username'] ?>">
-					<span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a>
+					<span class="glyphicon glyphicon-user"></span>&nbsp;Profile
+				</a></li>
+				<li><a href="<?= BASEPATH ?>contact/requests">
+					<span class="glyphicon glyphicon-th-list"></span>&nbsp;Requests
+				</a></li>
 				<li><a href="<?= BASEPATH ?>search"><span class="glyphicon glyphicon-search">
-					</span>&nbsp;Search</a></li>
+					</span>&nbsp;Search
+				</a></li>
 				<?php endif; ?>
 			</ul>
 		</div>

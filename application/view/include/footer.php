@@ -1,6 +1,6 @@
 	</section><!-- end container -->
 </main><!-- end content -->
-
+<br/>
 <footer>
 	<section class="container">
 		<hr/>

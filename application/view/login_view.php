@@ -16,8 +16,14 @@
 					<input type="password" id="password" class="form-control" name="password" maxlength="32">
 				</div>
 				<div class="form-group pull-right">
-					<input type="submit" id="btn_login" class='btn btn-default' name="btn_login" value="Log In">&nbsp;<span>or</span>&nbsp;
-					<a href="<?= BASEPATH ?>signup" id="link_signup" class='btn btn-default'>Sign Up</a>
+					<button type="submit" id="btn_login" class='btn btn-default'
+						name="btn_login">
+						Log In
+					</button>
+						&nbsp;<span>|</span>&nbsp;
+					<a href="<?= BASEPATH ?>signup" id="link_signup" class='btn btn-default'>
+						Sign Up
+					</a>
 				</div>
 			</form>
 		</div>

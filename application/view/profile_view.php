@@ -18,7 +18,9 @@
 					<?php
 					if(@$_SESSION['username'] == @$data['username']):
 					?>
-					<a href="<?= BASEPATH ?>edit/profile" class="btn btn-default btn-block">Edit</a>
+					<a href="<?= BASEPATH ?>edit/profile" class="btn btn-default btn-block">
+						Edit
+					</a>
 					<?php else: ?>
 					<div class="contact_status">
 						<button id="btn_cs" class="btn btn-default btn-block"
@@ -71,7 +73,9 @@
 						</button>
 					</td>
 					<td><a href="<?= BASEPATH ?>edit/email"
-						class="btn btn-default btn-xs">Edit</a>
+						class="btn btn-default btn-xs">
+						Edit
+					</a>
 					</td>
 				</tr>
 				<tr id="collapse_email" class="collapse">
@@ -81,7 +85,9 @@
 					<td><strong>Password:</strong></td>
 					<td>****</td>
 					<td><a href="<?= BASEPATH ?>edit/password"
-						class="btn btn-default btn-xs">Edit</a>
+						class="btn btn-default btn-xs">
+						Edit
+						</a>
 					</td>
 				</tr>
 			<?php endif; ?>

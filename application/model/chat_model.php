@@ -53,7 +53,7 @@ class Chat_model extends Model {
 			ON message.user = account.uid # for display purposes on view
 			WHERE conv_id = (SELECT conv_id FROM conversation 
 			WHERE users = CONCAT(?, ', ', ?)
-			OR users = CONCAT(?, ', ', ?)) ORDER BY date_time LIMIT 50"); // does work
+			OR users = CONCAT(?, ', ', ?)) ORDER BY date_time"); // does work
 		$stmt->bind_param('ssss', $current, $other, $other, $current);
 		$stmt->execute();
 		$result = $stmt->get_result();

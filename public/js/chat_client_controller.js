@@ -23,8 +23,7 @@ function displayChat(other) { // other user param
 					} else { 
 						message = '<article class="well site-color" style="text-align: right;"><p><small>[' + 
 						response[i]['date_time'] + ']</small></p>' + 
-						response[i]['content'] + ' <strong>:' +
-						response[i]['username'] + '</strong></article>';
+						response[i]['content'] + ' <strong>:you</strong></article>';
 					}
 					$('#chat_output').append(message); // display each msg response
 					last_msg_id = response[i]['msg_id']; // wil be set to the last msg_id thru loop
@@ -80,8 +79,7 @@ function getNew(other, last_msg_id) {
 					} else { 
 						message = '<article class="well site-color" style="text-align: right;"><p><small>[' + 
 						response[i]['date_time'] + ']</small></p>' + 
-						response[i]['content'] + ' <strong>:' +
-						response[i]['username'] + '</strong></article>';
+						response[i]['content'] + ' <strong>:you</strong></article>';
 					}
 					if(response[i]['username'] == $('#chat_space').find('h4').text() || 
 						response[i]['username'] == $('#user').find('h2').text()) {

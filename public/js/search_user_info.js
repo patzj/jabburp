@@ -15,10 +15,10 @@ function searchUser(search_key) {
 			if(response.length > 0) {
 				$('#search_output').children().empty(); // clear prev results
 				for(var i in response) { // loop on response elements
-					$('#search_output').children().append('<tr><td>' +
-						'<a href="http://localhost/jabburp/profile/view/' + response[i].username + 
-						'">' + response[i].username + '</a></td><td>' + response[i].name + 
-						'</td><tr>'); // create an interface for results
+					$('#search_output').children().append('<tr><td>' + response[i].username + '</td>' +
+						'<td>' + response[i].name + '</td>' +
+						'<td><a href="' + basepath + 'profile/view/' + response[i].username + 
+						'" class="btn btn-default btn-sm">View</a></td><tr>'); // create an interface for results
 				}
 			} else {
 				$('#search_output').children().empty(); // clear prev results

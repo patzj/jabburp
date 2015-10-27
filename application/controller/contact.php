@@ -64,4 +64,38 @@ class Contact extends Controller {
 		echo json_encode($result); // encode result for ajax/post
 		unset($this->model); // unset model obj
 	}
+
+	function requests() {
+		$this->model = $this->load->model('Contact_model');
+		$result = $this->model->get_requests($_SESSION['uid']);
+
+		$data['title'] = 'Contact Requests';
+		if($result) {
+			$data['requests'] = $result;
+
+		}
+		$this->view = $this->load->view('Requests_view', $data);
+
+		unset($this->model);
+		unset($this->view);
+	}
+
+	function notification() {
+		if(empty($_POST)) die('Direct script access not allowed.');
+
+		$new_req_count = self::get_requests_count();
+
+		while($new_req_count == 0) {
+			$new_req_count = self::get_requests_count();
+		}
+
+		echo json_encode($new_req_count);
+	}
+
+	private function get_requests_count() {
+		$this->model = $this->load->model('Contact_model');
+		$result = $this->model->get_requests_count($_SESSION['uid']);
+		unset($this->model);
+		return $result;
+	}
 }

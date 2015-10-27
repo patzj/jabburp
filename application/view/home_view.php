@@ -74,7 +74,9 @@
 				<input type="text" id="txt_msg" class="form-control" max-length="255">
 				</span>
 				<span class="col-xs-4 col-sm-3 col-md-2">
-				<button id="btn_send" class="btn btn-default btn-block">Send</button>
+				<button id="btn_send" class="btn btn-default btn-block">
+					Send
+				</button>
 				</span>
 			</form>
 		</section>
@@ -85,8 +87,8 @@
 <script>
 	$(document).ready(function() {
 		$('#chat_output').css({
-			'min-height': (screen.height / 2) + 'px',
-			'max-height': (screen.height / 2) + 'px'
+			'min-height': ((screen.height / 2)) + 'px',
+			'max-height': ((screen.height / 2)) + 'px'
 		});
 
 		$('#contact_list').css({

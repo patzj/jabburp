@@ -6,7 +6,7 @@
 			<h2 class="panel-title">Edit Profile</h2>
 		</div>
 		<div class="panel-body">
-			<form id="form_edit_profile" class="form" role="form"
+			<form id="form_edit_profile" class="form" role="form" autocomplete="off"
 				action="<?= BASEPATH ?>edit/update_profile" method="post">
 				<div class="form-group has-feedback">
 					<label for="firstname" class="control-label">Firstname:</label>
@@ -47,10 +47,14 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group">
-					<input type="submit" id="btn_save_profile" name="btn_save_profile"
-						class="btn btn-default" value="Save"/>
+					<button type="submit" id="btn_save_profile" name="btn_save_profile"
+						class="btn btn-default">
+						Save
+					</button>
 					<a href="<?= BASEPATH ?>profile/view/<?= $_SESSION['username']?>"
-						class="btn btn-default">Cancel</a>
+						class="btn btn-default">
+						Cancel
+					</a>
 					</div>
 			</form>
 		</div>

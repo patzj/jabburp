@@ -25,7 +25,7 @@ function removeStatus() { // this function will exec the pending stat removal
 		data: { data: $('h2').text() },
 		success: function(data) {
 			var response = eval('(' + data + ')'); // decode callback data
-			if(response) { // if true
+			if(response == true) { // if true
 				$('#btn_cs').val('add').text('add'); // change btn val
 				$('#btn_cs').prop({disabled: false}); // re-enable btn
 				$('#btn_cs').next().hide(); // hide sibling btn
@@ -43,7 +43,7 @@ function confirmRequest() { // this function will confirm the request
 		data: { data: $('h2').text() },
 		success: function(data) {
 			var response = eval('(' + data + ')'); // decode callback data
-			if(response) { // if true
+			if(response == true) { // if true
 				$('#btn_cs').val('remove').text('remove'); // change btn val
 				$('#btn_cs').next().hide(); // hide sibling btn
 
@@ -107,5 +107,7 @@ $(document).ready(function() { // main method
 				console.log('no command yet.');
 				break;
 		}
+
+		return false;
 	});
 });

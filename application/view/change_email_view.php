@@ -6,7 +6,7 @@
 			<h2 class="panel-title">Change Email</h2>
 		</div>
 		<div class="panel-body">
-			<form id="form_change_email" class="form" role="form"
+			<form id="form_change_email" class="form" role="form" autocomplete="off"
 				action="<?= BASEPATH ?>edit/update_email" method="post">
 				<div class="form-group has-feedback">
 					<label for="email" class="control-label">New Email:</label>
@@ -24,10 +24,14 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group">
-					<input type="submit" id="btn_change_email" name="btn_change_email" 
-						class="btn btn-default" value="Submit">
+					<button type="submit" id="btn_change_email" name="btn_change_email" 
+						class="btn btn-default">
+						Save
+					</button>
 					<a href="<?= BASEPATH ?>profile/view/<?= $_SESSION['username'] ?>"
-						class="btn btn-default">Cancel</a>
+						class="btn btn-default">
+						Cancel
+					</a>
 				</div>
 			</form>
 		</div>

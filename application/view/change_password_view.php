@@ -31,10 +31,14 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group has-feedback">
-					<input type="submit" id="btn_change_password" name="btn_change_password" 
-						class="btn btn-default" value="Submit">
+					<button type="submit" id="btn_change_password" name="btn_change_password" 
+						class="btn btn-default">
+						Save
+					</button>
 					<a href="<?= BASEPATH ?>profile/view/<?= $_SESSION['username'] ?>"
-						class="btn btn-default">Cancel</a>
+						class="btn btn-default">
+						Cancel
+					</a>
 				</div>
 			</form>
 		</div>
