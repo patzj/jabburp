@@ -43,9 +43,18 @@ session_start();
 				<li><a href="<?= BASEPATH ?>"><span class="glyphicon glyphicon-home"></span>
 					&nbsp;Home
 				</a></li>
-				<li><a href="<?= BASEPATH ?>profile/view/<?= @$_SESSION['username'] ?>">
-					<span class="glyphicon glyphicon-user"></span>&nbsp;Profile
-				</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<span class="glyphicon glyphicon-user"></span>
+						&nbsp;<?= @$_SESSION['username'] ?>&nbsp;
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="<?= BASEPATH ?>profile/view/<?= @$_SESSION['username'] ?>">
+						Profile</a></li>
+						<li><a href="<?= BASEPATH ?>logout">Log Out</a></li>
+					</ul>
+				</li>
 				<li><a href="<?= BASEPATH ?>contact/requests">
 					<span class="glyphicon glyphicon-th-list"></span>&nbsp;Requests
 				</a></li>

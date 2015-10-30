@@ -82,7 +82,7 @@ $(document).ready(function() { // main method
 			break;
 	}
 
-	$('button').click(function() {
+	$('button.btn-block').click(function() {
 		switch($(this).attr('id')) { // run command depending on the button clicked
 			case 'btn_cs':
 				switch($(this).val()) {
@@ -104,7 +104,7 @@ $(document).ready(function() { // main method
 				removeStatus(); // removal of pending request bet. 2 users
 				break;
 			default:
-				console.log('no command yet.');
+				return false;
 				break;
 		}
 

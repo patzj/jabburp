@@ -12,10 +12,11 @@ function requestsNotification() {
 					'&nbsp;Requests&nbsp;<span class="badge">' + response + '</span>');
 			}
 
-			setTimeout(functionrequestsNotification, 1000);
+			setTimeout(requestsNotification, 1000);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.log(textStatus);
+			setTimeout(requestsNotification, 3000);
 		}
 	});
 }

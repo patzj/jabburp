@@ -193,7 +193,7 @@ function setUnreadMessageIndicator() {
 						$('.contact').eq(i).css('font-weight', 'bold');
 					}
 				}
-			console.log(response);
+			// console.log(response);
 			}
 			setTimeout(setUnreadMessageIndicator, 2000);
 		},

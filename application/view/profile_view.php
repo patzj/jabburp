@@ -52,7 +52,7 @@
 					<td class="visible-xs-block">
 						<button class="btn btn-default btn-xs" data-toggle="collapse"
 							data-target="#collapse_about">
-							<span class="glyphicon glyphicon-chevron-down">
+							<span class="glyphicon glyphicon-option-horizontal">
 						</button>
 					</td>
 					<td></td>
@@ -69,7 +69,7 @@
 					<td class="visible-xs-block">
 						<button class="btn btn-default btn-xs" data-toggle="collapse"
 							data-target="#collapse_email">
-							<span class="glyphicon glyphicon-chevron-down">
+							<span class="glyphicon glyphicon-option-horizontal">
 						</button>
 					</td>
 					<td><a href="<?= BASEPATH ?>edit/email"
@@ -98,16 +98,3 @@
 </section><!-- end profile_main -->
 <section class="col-sm-3 col-md-3 col-lg-4"></section>	
 <script src="<?= BASEPATH ?>public/js/user_contact_status.js"></script>
-<script>
-	$(document).ready(function() {
-		$('[class*="glyphicon"]').click(function() {
-			if($(this).hasClass('glyphicon-chevron-down') == true) {
-				$(this).removeClass('glyphicon-chevron-down');
-				$(this).addClass('glyphicon-chevron-up');
-			} else {
-				$(this).removeClass('glyphicon-chevron-up');
-				$(this).addClass('glyphicon-chevron-down');	
-			}
-		});
-	});
-</script>

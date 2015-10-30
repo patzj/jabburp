@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS contact(
     user1 int(11) NOT NULL,
     user2 int(11) NOT NULL,
     status enum('pending',  'confirmed',  'rejected',  'blocked'),
+    last_msg_read int(11) DEFAULT 0,
     CONSTRAINT fk_user1 FOREIGN KEY (user1) REFERENCES account(uid) ON DELETE CASCADE,
     CONSTRAINT fk_user2 FOREIGN KEY (user2) REFERENCES account(uid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

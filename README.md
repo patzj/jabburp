@@ -22,3 +22,7 @@ Base code is PHP in a(n) MVC Framework I made out from reading tutorials.
 - Partially Working Status Modules
 - Good-to-Go for deployment
 - Crashes on Chrome (might be caused by contact status modules)
+
+#### Beta 1.0
+- Working Basic Chat Application Functionality
+- Ready for Beta Deployment and Tesing
