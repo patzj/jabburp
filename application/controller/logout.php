@@ -9,10 +9,17 @@ class Logout extends Controller {
 	}
 
 	function index() {
-		session_destroy();
-		$data['title'] = 'Log Out';
-		$this->view = $this->load->view('Logout_view');
-		unset($data);
-		unset($this->view);
+		$uid = $_SESSION['uid'];
+
+		$this->model = $this->load->model('Logout_model');
+		$result = $this->model->offline($uid); 
+
+		if($result) {
+			session_destroy();
+			$data['title'] = 'Log Out';
+			$this->view = $this->load->view('Logout_view');
+			unset($data);
+			unset($this->view);
+		}
 	}
 }
